@@ -1,17 +1,18 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { User }                               from '../entities/user.entity';
-import { InjectRepository }                   from '@nestjs/typeorm';
-import { Repository }                         from 'typeorm';
-import { JwtService }                         from '@nestjs/jwt';
-import * as bcrypt                            from 'bcrypt';
-import { ExtractJwt, JwtFromRequestFunction } from 'passport-jwt';
-import { isNil }                              from '@nestjs/common/utils/shared.utils';
-import { UserService }                        from './user.service';
-import { AuthDto }                            from '../dtos/auth.dto';
-import { JwtDto }                             from '../dtos/jwt.dto';
-import { JwtPayloadDto }                      from '../dtos/jwt-payload.dto';
-import { CreateUserDto }                      from '../dtos/create-user.dto';
-import { UpdateUserDto }                      from '../dtos/update-user.dto';
+import { User }                                  from '../entities/user.entity';
+import { InjectRepository }                      from '@nestjs/typeorm';
+import { Repository }                            from 'typeorm';
+import { JwtService }                            from '@nestjs/jwt';
+import * as bcrypt                               from 'bcrypt';
+import { ExtractJwt, JwtFromRequestFunction }    from 'passport-jwt';
+import { isNil }                                 from '@nestjs/common/utils/shared.utils';
+import { UserService }                           from './user.service';
+import { AuthDto }                               from '../dtos/auth.dto';
+import { JwtDto }                                from '../dtos/jwt.dto';
+import { JwtPayloadDto }                         from '../dtos/jwt-payload.dto';
+import { UpdateUserDto }                         from '../dtos/update-user.dto';
+import { SignUpDto }                             from '../dtos/sign-up.dto';
+import { UserRoles }                             from '../enums/user-roles';
 
 @Injectable()
 export class AuthService {
@@ -43,10 +44,10 @@ export class AuthService {
     };
   }
 
-  async signUp(createUser: CreateUserDto): Promise<User> {
+  async signUp(createUser: SignUpDto): Promise<User> {
     const { password, ...user } = createUser;
     const hash                  = await AuthService.hash(password);
-    return await this.userService.create({ ...user, password: hash });
+    return await this.userService.create({ ...user, password: hash, role: UserRoles.USER });
   }
 
   private static async hash(plain: string, saltRounds = 10): Promise<string> {
@@ -58,7 +59,7 @@ export class AuthService {
 
     if (updateUser.password !== undefined) {
       const hash = await AuthService.hash(updateUser.password);
-      toUpdate = { ...toUpdate, password: hash };
+      toUpdate   = { ...toUpdate, password: hash };
     }
 
     return await this.userService.update(id, toUpdate);
@@ -82,13 +83,13 @@ export class AuthService {
       const session: Record<string, any> | null | undefined = req.session;
 
       return isNil(session) ? null : this.getJwtFromSession(session)?.access_token ?? null;
-    }
+    };
   }
 
   public getExtractingMethods(): JwtFromRequestFunction {
     return ExtractJwt.fromExtractors([
       this.fromSessionAsBearerToken(),
       ExtractJwt.fromAuthHeaderAsBearerToken(),
-    ])
+    ]);
   }
 }

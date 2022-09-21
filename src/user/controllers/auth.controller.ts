@@ -3,17 +3,18 @@ import { CatchEntityErrors }                                               from 
 import { ApiBody, ApiResponse, ApiTags }                                   from '@nestjs/swagger';
 import { User }                                                            from '../entities/user.entity';
 import { ApiJwtAuth }                                                      from '../decorators/api-jwt-auth.decorator';
-import { UserService }                                                     from '../services/user.service';
-import { ApiLocalAuth }                                                    from '../decorators/api-local-auth.decorator';
-import { UserDto }                                                         from '../dtos/user.dto';
-import { AuthService }                                                     from '../services/auth.service';
-import { AuthDto }                                                         from '../dtos/auth.dto';
-import { CreateUserDto }                                                   from '../dtos/create-user.dto';
-import { JwtDto }                                                          from '../dtos/jwt.dto';
-import { Express }                                                         from '../interfaces/request.interface';
-import { ClassSerializer }                                                 from '../../commons/decorators/class-serializer.decorator';
-import { JwtPayloadDto }                                                   from '../dtos/jwt-payload.dto';
-import { Serialize }                                                       from '../../commons/decorators/serialize.decorator';
+import { UserService }     from '../services/user.service';
+import { ApiLocalAuth }    from '../decorators/api-local-auth.decorator';
+import { UserDto }         from '../dtos/user.dto';
+import { AuthService }     from '../services/auth.service';
+import { AuthDto }         from '../dtos/auth.dto';
+import { CreateUserDto }   from '../dtos/create-user.dto';
+import { JwtDto }          from '../dtos/jwt.dto';
+import { Express }         from '../interfaces/request.interface';
+import { ClassSerializer } from '../../commons/decorators/class-serializer.decorator';
+import { JwtPayloadDto }   from '../dtos/jwt-payload.dto';
+import { Serialize }       from '../../commons/decorators/serialize.decorator';
+import { SignUpDto }       from '../dtos/sign-up.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -39,7 +40,8 @@ export class AuthController {
   @Post('sign-up')
   @ApiResponse({ type: UserDto })
   @Serialize(UserDto) /* TODO not show password in swagger scheme */
-  async signUp(@Body() newUser: CreateUserDto): Promise<UserDto> {
+  async signUp(@Body() newUser: SignUpDto): Promise<UserDto> {
+
     return await this.authService.signUp(newUser);
   }
 
