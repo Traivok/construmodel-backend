@@ -4,14 +4,15 @@ import { UserModule }                  from './user/user.module';
 import { ReportModule }                from './report/report.module';
 import { PlanModule }                  from './plan/plan.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { CommonsModule } from './commons/commons.module';
 import { TypeOrmModule }               from '@nestjs/typeorm';
 import { User }                        from './user/entities/user.entity';
+import getConfig                       from '../config';
 
 @Module({
   imports:     [
     ConfigModule.forRoot({
       isGlobal: true,
+      load:     [ getConfig ],
     }),
 
     TypeOrmModule.forRootAsync({
@@ -26,11 +27,11 @@ import { User }                        from './user/entities/user.entity';
       } ),
     }),
 
+
     ProgressModule,
     PlanModule,
     UserModule,
     ReportModule,
-    CommonsModule,
   ],
   controllers: [],
   providers:   [],

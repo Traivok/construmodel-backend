@@ -1,5 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Expose }      from 'class-transformer';
+import { ApiProperty }                from '@nestjs/swagger';
+import { Exclude, Expose, Transform } from 'class-transformer';
+import { UserRoles }                  from '../enums/user-roles';
 
 export class UserDto {
   @Expose()
@@ -19,7 +20,8 @@ export class UserDto {
   username: string;
 
   @Expose()
-  isAdmin: boolean;
+  @ApiProperty({ enum: UserRoles })
+  role: UserRoles;
 
   @Expose()
   createdAt: Date;

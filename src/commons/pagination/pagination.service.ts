@@ -25,7 +25,7 @@ export abstract class PaginationService<T extends ObjectLiteral> {
   protected abstract repo: Repository<T>;
 
 
-  public async getAllPaginated(pageOptionsDto: PageOptionsDto): Promise<PageDto<T>> {
+  public async findAllPaginated(pageOptionsDto: PageOptionsDto): Promise<PageDto<T>> {
     const queryBuilder = this.repo.createQueryBuilder(this.entityName);
 
     queryBuilder.orderBy(`${ this.entityName }.${ this.orderBy }`)
