@@ -10,9 +10,9 @@ import { UserService }                           from './user.service';
 import { AuthDto }                               from '../dtos/auth.dto';
 import { JwtDto }                                from '../dtos/jwt.dto';
 import { JwtPayloadDto }                         from '../dtos/jwt-payload.dto';
-import { UpdateUserDto }                         from '../dtos/update-user.dto';
-import { SignUpDto }                             from '../dtos/sign-up.dto';
-import { UserRoles }                             from '../enums/user-roles';
+import { UpdateUserDto } from '../dtos/update-user.dto';
+import { RegisterDto }   from '../dtos/register.dto';
+import { UserRoles }     from '../enums/user-roles';
 
 @Injectable()
 export class AuthService {
@@ -44,7 +44,7 @@ export class AuthService {
     };
   }
 
-  async signUp(createUser: SignUpDto): Promise<User> {
+  async register(createUser: RegisterDto): Promise<User> {
     const { password, ...user } = createUser;
     const hash                  = await AuthService.hash(password);
     return await this.userService.create({ ...user, password: hash, role: UserRoles.USER });

@@ -33,7 +33,7 @@ describe('Authentication Controller (e2e)', () => {
 
   it('Should be able to create new users', async () => {
     return request(app.getHttpServer())
-      .post('/auth/sign-up')
+      .post('/auth/register')
       .send(user)
       .expect(201)
       .then((res) => {
@@ -51,12 +51,12 @@ describe('Authentication Controller (e2e)', () => {
     const { email, username, ...userDetails } = user;
 
     await request(app.getHttpServer())
-      .post('/auth/sign-up')
+      .post('/auth/register')
       .send({ email, username: username + '_diff', ...userDetails })
       .expect(409);
 
     return await request(app.getHttpServer())
-      .post('/auth/sign-up')
+      .post('/auth/register')
       .send({ email: 'diff.' + email, username, ...userDetails })
       .expect(409);
   });

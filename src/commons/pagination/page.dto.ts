@@ -2,7 +2,12 @@ import PageMetaDto            from './page-meta.dto';
 import { ApiExposedProperty } from '../decorators/api-exposed-property.decorator';
 
 export class PageDto<T> {
-  @ApiExposedProperty({ apiOptions: { isArray: true } })
+  @ApiExposedProperty({
+    apiOptions: {
+      type:  'array',
+      items: { type: 'object' },
+    },
+  })
   readonly data: T[];
 
   @ApiExposedProperty({ apiOptions: { type: () => PageMetaDto } })

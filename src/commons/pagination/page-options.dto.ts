@@ -9,9 +9,6 @@ export enum Order {
 }
 
 export class PageOptionsDto {
-  @Exclude()
-  private readonly logger = new Logger('PageOptionsDto');
-
   constructor(order = Order.ASC, page = 1, take = 10) {
     this.order = order;
     this.page  = page;

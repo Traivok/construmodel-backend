@@ -8,13 +8,11 @@ import { ApiLocalAuth }    from '../decorators/api-local-auth.decorator';
 import { UserDto }         from '../dtos/user.dto';
 import { AuthService }     from '../services/auth.service';
 import { AuthDto }         from '../dtos/auth.dto';
-import { CreateUserDto }   from '../dtos/create-user.dto';
 import { JwtDto }          from '../dtos/jwt.dto';
 import { Express }         from '../interfaces/request.interface';
-import { ClassSerializer } from '../../commons/decorators/class-serializer.decorator';
 import { JwtPayloadDto }   from '../dtos/jwt-payload.dto';
-import { Serialize }       from '../../commons/decorators/serialize.decorator';
-import { SignUpDto }       from '../dtos/sign-up.dto';
+import { Serialize }   from '../../commons/decorators/serialize.decorator';
+import { RegisterDto } from '../dtos/register.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -37,12 +35,12 @@ export class AuthController {
     return jwt;
   }
 
-  @Post('sign-up')
+  @Post('register')
   @ApiResponse({ type: UserDto })
   @Serialize(UserDto) /* TODO not show password in swagger scheme */
-  async signUp(@Body() newUser: SignUpDto): Promise<UserDto> {
+  async register(@Body() newUser: RegisterDto): Promise<UserDto> {
 
-    return await this.authService.signUp(newUser);
+    return await this.authService.register(newUser);
   }
 
   @ApiJwtAuth()

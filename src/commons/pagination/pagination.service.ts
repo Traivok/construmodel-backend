@@ -1,7 +1,4 @@
-import { Inject, Injectable }        from '@nestjs/common';
-import { User }                      from '../../user/entities/user.entity';
 import { ObjectLiteral, Repository } from 'typeorm';
-import { InjectRepository }          from '@nestjs/typeorm';
 import { PageOptionsDto }            from './page-options.dto';
 import { PageDto }                   from './page.dto';
 import PageMetaDto                   from './page-meta.dto';

@@ -6,11 +6,15 @@ import { PlanModule }                     from './plan/plan.module';
 import { ProgressModule }                 from './progress/progress.module';
 import { UserModule }                     from './user/user.module';
 import { ReportModule }                   from './report/report.module';
+import { UserDto }                        from './user/dtos/user.dto';
+import { PageDto }                        from './commons/pagination/page.dto';
 
 ( async function bootstrap() {
   const app = appConfigure(await NestFactory.create(AppModule));
 
   app.useLogger([ 'log', 'warn', 'error', 'verbose', 'debug' ]);
+
+  app.enableCors();
 
   const swaggerConf = new DocumentBuilder()
     .setTitle('User boilerplate')
