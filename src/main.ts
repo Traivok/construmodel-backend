@@ -2,12 +2,9 @@ import { NestFactory }                    from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule }                      from './app.module';
 import { appConfigure }                   from './app.configure';
-import { PlanModule }                     from './plan/plan.module';
-import { ProgressModule }                 from './progress/progress.module';
 import { UserModule }                     from './user/user.module';
 import { ReportModule }                   from './report/report.module';
-import { UserDto }                        from './user/dtos/user.dto';
-import { PageDto }                        from './commons/pagination/page.dto';
+import { ProjectModule }                  from './project/project.module';
 
 ( async function bootstrap() {
   const app = appConfigure(await NestFactory.create(AppModule));
@@ -36,9 +33,8 @@ import { PageDto }                        from './commons/pagination/page.dto';
     deepScanRoutes: true,
     include:        [
       UserModule,
-      PlanModule,
-      ProgressModule,
       ReportModule,
+      ProjectModule,
     ],
   }));
 

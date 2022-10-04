@@ -6,6 +6,5 @@ import { ApiResponseOptions }               from '@nestjs/swagger';
 export function Serialize<DTO>(dto: ClassConstructor<DTO>, options?: ApiResponseOptions) {
   return applyDecorators(
     UseInterceptors(new SerializeInterceptor<DTO>(dto)),
-    // ApiResponse(options ?? { type: dto }),
   );
 }

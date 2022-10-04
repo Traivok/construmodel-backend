@@ -1,10 +1,7 @@
 import { Expose, plainToInstance, Transform } from 'class-transformer';
 import { StageDto }                           from './stage.dto';
 import { Stage }                              from '../entities/stage.entity';
-
-const stagesToStagesDto = (stages: Stage[]): StageDto[] => stages.map(s => {
-  console.log(s);
-  return plainToInstance(StageDto, s, { excludeExtraneousValues: true }); });
+import { entitiesToDTOs }                     from '../../commons/commons.lib';
 
 export class ProjectDto {
   @Expose()
@@ -14,7 +11,7 @@ export class ProjectDto {
   name: string;
 
   @Expose()
-  @Transform(({ obj }): StageDto[] => stagesToStagesDto(obj.stages))
+  @Transform(({ obj }): StageDto[] => entitiesToDTOs(obj.stages, StageDto))
   stages: StageDto[];
 
   @Expose()

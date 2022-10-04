@@ -1,5 +1,6 @@
-import { ApiProperty }                from '@nestjs/swagger';
-import { IsDate, IsNumber, IsString } from 'class-validator';
+import { ApiProperty }                                          from '@nestjs/swagger';
+import { IsDate, IsDateString, IsNumber, IsOptional, IsString } from 'class-validator';
+import { Transform, Type }                                      from 'class-transformer';
 
 export class CreateTaskDto {
   @IsString()
@@ -7,10 +8,12 @@ export class CreateTaskDto {
   name: string;
 
   @IsNumber()
+  @IsOptional()
   @ApiProperty()
-  nextTaskId: number;
+  nextTaskId?: number;
 
   @IsDate()
+  @Type(() => Date)
   @ApiProperty()
-  expectedAt: Date
+  expectedAt: Date;
 }

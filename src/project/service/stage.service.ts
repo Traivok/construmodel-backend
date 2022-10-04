@@ -16,6 +16,15 @@ export class StageService {
     return await this.repo.save(stage);
   }
 
+  async findByOrFail(stageId: number): Promise<Stage> {
+    return await this.repo.findOneOrFail({
+      relations: [ 'project', 'tasks' ],
+      where:     {
+        id: stageId,
+      },
+    });
+  }
+
   async getAll(): Promise<Stage[]> {
     return await this.repo.find({
       relations: {

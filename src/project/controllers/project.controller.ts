@@ -6,7 +6,6 @@ import { CreateProjectDto }                                  from '../dtos/creat
 import { Project }                                           from '../entities/project.entity';
 import { ApiResponse, ApiTags }                              from '@nestjs/swagger';
 import { CatchEntityErrors }                                 from '../../commons/decorators/catch-entity-errors.decorator';
-import { plainToInstance }                                   from 'class-transformer';
 
 @ApiTags('project')
 @Controller('project')

@@ -1,7 +1,16 @@
-import { BeforeRemove, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { Logger }                                                                  from '@nestjs/common';
-import { Exclude }                                                                 from 'class-transformer';
-import { UserRoles }                                                               from '../enums/user-roles';
+import {
+  BeforeRemove,
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Logger }                                                                            from '@nestjs/common';
+import { Exclude }                                                                           from 'class-transformer';
+import { UserRoles }                                                                         from '../enums/user-roles';
+import { Task }                                                                              from '../../project/entities/task.entity';
 
 @Entity('users')
 export class User {
@@ -35,6 +44,9 @@ export class User {
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
+
+  // @UpdateDateColumn({ name: 'updated_at'})
+  // updatedAt: Date;
 
   @BeforeRemove()
   logRemoval() {

@@ -14,6 +14,6 @@ export default new DataSource({
   username:    config.DB_USER,
   synchronize: config.DB_SYNC ?? false,
   logging:     config.DB_LOG ?? false,
-  entities:    [ __dirname + '/src/**/*.entity.{js,ts}' ],
+  entities:    [ __dirname + '/src/**/*.entity{.ts,.ts}' ],
   migrations:  [ __dirname + '/migrations/**/*{.ts,.js}' ],
 });

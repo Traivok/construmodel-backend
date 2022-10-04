@@ -1,11 +1,10 @@
 import { ArgumentsHost, ExceptionFilter, HttpStatus, Logger } from '@nestjs/common';
 import { Response }                                           from 'express';
+import { stat }                                               from 'fs';
 
 export abstract class EntityBaseFilterFilter<T> implements ExceptionFilter {
   protected readonly logger = new Logger(EntityBaseFilterFilter.name);
   abstract readonly httpCode: HttpStatus;
-
-  abstract get message(): string;
 
   checkException(e: T): boolean {
     return true;
@@ -22,7 +21,7 @@ export abstract class EntityBaseFilterFilter<T> implements ExceptionFilter {
       res.status(status)
         .json({
           statusCode: status,
-          message:    this.message,
+          message:    exception,
         });
     } else {
       this.logger.error(exception);
