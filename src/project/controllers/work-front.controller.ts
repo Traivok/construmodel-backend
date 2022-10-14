@@ -1,13 +1,10 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Post } from '@nestjs/common';
-import { ApiResponse, ApiTags }                                                   from '@nestjs/swagger';
-import { WorkFrontService }                                                       from '../service/work-front.service';
-import { Serialize }                                                              from '../../commons/decorators/serialize.decorator';
-import { WorkFrontDto }                                                           from '../dtos/work-front.dto';
-import { WorkFront }                                                              from '../entities/work-front.entity';
-import { BuildingDto }                                                            from '../dtos/building.dto';
-import { CreateBuildingDto }                                                      from '../dtos/create-building.dto';
-import { Building }                                                               from '../entities/building.entity';
-import { CreateWorkFrontDto }                                                     from '../dtos/create-work-front.dto';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { ApiResponse, ApiTags }                              from '@nestjs/swagger';
+import { WorkFrontService }                                  from '../services/work-front.service';
+import { Serialize }                                         from '../../commons/decorators/serialize.decorator';
+import { WorkFrontDto }                                      from '../dtos/work-front.dto';
+import { WorkFront }                                         from '../entities/work-front.entity';
+import { CreateWorkFrontDto }                                from '../dtos/create-work-front.dto';
 
 @ApiTags('work-front')
 @Controller('work-front')

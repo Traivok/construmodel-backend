@@ -5,6 +5,7 @@ import { CreateWorkFrontDto } from '../dtos/create-work-front.dto';
 import { WorkFront }          from '../entities/work-front.entity';
 import { InjectRepository }   from '@nestjs/typeorm';
 import { Repository }         from 'typeorm';
+import { Progress }           from '../entities/progress.entity';
 
 @Injectable()
 export class WorkFrontService {
@@ -20,10 +21,10 @@ export class WorkFrontService {
     return await this.repo.findOneByOrFail({ id });
   }
 
-
   async getAll(): Promise<WorkFront[]> {
     return await this.repo.find({
       relations: { buildings: true },
     });
   }
+
 }

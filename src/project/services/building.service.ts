@@ -1,5 +1,4 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { PaginationService }               from '../../commons/pagination/pagination.service';
 import { Building }                        from '../entities/building.entity';
 import { Repository }                      from 'typeorm';
 import { InjectRepository }                from '@nestjs/typeorm';
@@ -18,14 +17,14 @@ export class BuildingService {
 
   public async findOneOrFail(id: number): Promise<Building> {
     return await this.repo.findOneOrFail({
-      relations: [ 'workFronts', 'workFronts.progressions' ],
+      relations: [ 'workFronts', 'workFronts.progresses' ],
       where:     { id },
     });
   }
 
   public async findAll(): Promise<Building[]> {
     return await this.repo.find({
-      relations: [ 'workFronts', 'workFronts.progressions' ],
+      relations: [ 'workFronts', 'workFronts.progresses' ],
     });
   }
 

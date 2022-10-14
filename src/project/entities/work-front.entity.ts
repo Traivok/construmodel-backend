@@ -7,11 +7,11 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn, Unique,
-}                      from 'typeorm';
-import { Exclude }     from 'class-transformer';
-import { Logger }      from '@nestjs/common';
-import { Building }    from './building.entity';
-import { Progression } from './progression.entity';
+}                   from 'typeorm';
+import { Exclude }  from 'class-transformer';
+import { Logger }   from '@nestjs/common';
+import { Building } from './building.entity';
+import { Progress } from './progress.entity';
 
 @Entity('work_front')
 @Unique([ 'name' ])
@@ -25,6 +25,6 @@ export class WorkFront {
   @ManyToMany(() => Building, building => building.workFronts)
   buildings?: Building[];
 
-  @OneToMany(() => Progression, progression => progression.workFront)
-  progressions: Progression[];
+  @OneToMany(() => Progress, progress => progress.workFront)
+  progresses: Progress[];
 }

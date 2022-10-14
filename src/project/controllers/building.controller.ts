@@ -1,29 +1,17 @@
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Param,
-  ParseIntPipe,
-  Post,
-}                               from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { BuildingService }      from '../service/building.service';
-import { WorkFrontService }     from '../service/work-front.service';
-import { ProgressionService }   from '../service/progression.service';
-import { CatchEntityErrors }    from '../../commons/decorators/catch-entity-errors.decorator';
-import { Serialize }            from '../../commons/decorators/serialize.decorator';
-import { BuildingDto }          from '../dtos/building.dto';
-import { CreateBuildingDto }    from '../dtos/create-building.dto';
-import { Building }             from '../entities/building.entity';
-import { WorkFrontDto }         from '../dtos/work-front.dto';
-import { WorkFront }            from '../entities/work-front.entity';
-import { SprintDto }            from '../dtos/sprint.dto';
-import { CreateSprintDto }      from '../dtos/create-sprint.dto';
-import { Sprint }               from '../entities/sprint.entity';
-import { SprintService }        from '../service/sprint.service';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { ApiResponse, ApiTags }                                                   from '@nestjs/swagger';
+import { BuildingService }                                                        from '../services/building.service';
+import { WorkFrontService }                                                       from '../services/work-front.service';
+import { CatchEntityErrors }                                                      from '../../commons/decorators/catch-entity-errors.decorator';
+import { Serialize }                                                              from '../../commons/decorators/serialize.decorator';
+import { BuildingDto }                                                            from '../dtos/building.dto';
+import { CreateBuildingDto }                                                      from '../dtos/create-building.dto';
+import { Building }                                                               from '../entities/building.entity';
+import { WorkFrontDto }                                                           from '../dtos/work-front.dto';
+import { SprintDto }                                                              from '../dtos/sprint.dto';
+import { CreateSprintDto }                                                        from '../dtos/create-sprint.dto';
+import { Sprint }                                                                 from '../entities/sprint.entity';
+import { SprintService }                                                          from '../services/sprint.service';
 
 @ApiTags('building')
 @Controller('building')
@@ -32,8 +20,7 @@ export class BuildingController {
 
   constructor(protected buildingSrv: BuildingService,
               protected workFrontSrv: WorkFrontService,
-              protected sprintSrv: SprintService,
-              protected progressionSrv: ProgressionService) {}
+              protected sprintSrv: SprintService) {}
 
   /* Building */
   @Post()
@@ -46,7 +33,7 @@ export class BuildingController {
 
   @Get()
   @Serialize(BuildingDto)
-  @ApiResponse({ status: HttpStatus.OK, type: BuildingDto, description: 'Returns all Buildings' })
+  @ApiResponse({ status: HttpStatus.OK, type: BuildingDto, isArray: true, description: 'Returns all Buildings' })
   async getAll(): Promise<Building[]> {
     return await this.buildingSrv.findAll();
   }
@@ -74,6 +61,4 @@ export class BuildingController {
     const building = await this.buildingSrv.findOneOrFail(buildingId);
     return await this.sprintSrv.create(createSprintDto, building);
   }
-
-
 }

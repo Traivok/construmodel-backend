@@ -1,5 +1,5 @@
 import { Expose, Transform } from 'class-transformer';
-import { ProgressionDto }    from './progression.dto';
+import { ProgressDto }       from './progress.dto';
 import { entitiesToDTOs }    from '../../commons/commons.lib';
 
 export class SprintDto {
@@ -16,6 +16,6 @@ export class SprintDto {
   buildingId: number;
 
   @Expose()
-  @Transform(({ obj }): ProgressionDto[] => entitiesToDTOs(obj.progressions, ProgressionDto))
-  progressions: ProgressionDto[];
+  @Transform(({ obj }): ProgressDto[] => entitiesToDTOs(obj.progresses, ProgressDto))
+  progresses: ProgressDto[];
 }

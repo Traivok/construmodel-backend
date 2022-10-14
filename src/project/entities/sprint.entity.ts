@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Building }                                                                 from './building.entity';
-import { Progression }                                                              from './progression.entity';
+import { Building }                                                                  from './building.entity';
+import { Progress }                                                                  from './progress.entity';
 
 @Entity('sprint')
 export class Sprint {
@@ -13,10 +13,14 @@ export class Sprint {
   @Column()
   end: Date;
 
+  @Column({ name: 'building_id' })
+  buildingId: number;
+
   @ManyToOne(() => Building, building => building.sprints, { cascade: true, nullable: false })
   @JoinColumn({ name: 'building_id' })
   building: Building;
 
-  @OneToMany(() => Progression, progression => progression.sprint)
-  progressions: Progression[];
+  @OneToMany(() => Progress, progress => progress.sprint)
+  progresses: Progress[];
 }
+

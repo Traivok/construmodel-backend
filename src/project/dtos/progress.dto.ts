@@ -1,12 +1,6 @@
 import { Expose, Transform } from 'class-transformer';
 
-export class ProgressionDto {
-  @Expose()
-  id: number;
-
-  @Expose()
-  name: string;
-
+export class ProgressDto {
   @Transform(({ obj }): number => obj.workFrontId)
   @Expose()
   workFrontId: number;
@@ -19,5 +13,5 @@ export class ProgressionDto {
   currentFloor: number;
 
   @Expose()
-  expectedFloor: number;
+  plannedFloor: number;
 }
