@@ -1,7 +1,8 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Exclude }                                                             from 'class-transformer';
-import { Logger }                                                              from '@nestjs/common';
-import { WorkFront }                                                           from './work-front.entity';
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Exclude }                                                                                    from 'class-transformer';
+import { Logger }                                                                                     from '@nestjs/common';
+import { WorkFront }                                                                                  from './work-front.entity';
+import { Sprint }                                                                                     from './sprint.entity';
 
 @Entity('building')
 export class Building {
@@ -11,16 +12,23 @@ export class Building {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column()
+  name: string;
+
   @Column({ name: 'floor_count', type: 'integer' })
   floorCount: number;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @OneToMany(() => WorkFront, workFront => workFront.building)
-  workFronts: WorkFront[];
+  @ManyToMany(() => WorkFront, workFront => workFront.buildings, { cascade: true })
+  @JoinTable({
+    name:              'buildings_rel_work_fronts',
+    joinColumn:        { name: 'building_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'category_id', referencedColumnName: 'id' },
+  })
+  workFronts?: WorkFront[];
 
-  public get missingFloors(): boolean {
-    return this.workFronts.some(w => w.missingFloors);
-  }
+  @OneToMany(() => Sprint, sprint => sprint.building)
+  sprints: Sprint[];
 }
