@@ -1,16 +1,7 @@
-import {
-  BeforeRemove,
-  Column,
-  CreateDateColumn,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
-import { Logger }                                                                            from '@nestjs/common';
-import { Exclude }                                                                           from 'class-transformer';
-import { UserRoles }                                                                         from '../enums/user-roles';
-import { Task }                                                                              from '../../project/entities/task.entity';
+import { BeforeRemove, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Logger }                                                                 from '@nestjs/common';
+import { Exclude }                                                                from 'class-transformer';
+import { UserRoles }                                                              from '../enums/user-roles';
 
 @Entity('users')
 export class User {

@@ -37,7 +37,7 @@ export class UserController {
 
   @Get()
   @ApiPaginatedResponse(UserDto)
-  async findAll(@Query('pageOptions') pageOptions: PageOptionsDto): Promise<PageDto<UserDto>> {
+  async findAll(@Query() pageOptions: PageOptionsDto): Promise<PageDto<UserDto>> {
     const { meta, data } = await this.userService.findAllPaginated(pageOptions);
     return new PageDto<UserDto>(
       plainToInstance(UserDto, data, { excludeExtraneousValues: true }),

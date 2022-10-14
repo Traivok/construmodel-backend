@@ -12,6 +12,7 @@ specifiers:
   '@nestjs/swagger': ^6.1.2
   '@nestjs/testing': ^9.0.0
   '@nestjs/typeorm': ^9.0.1
+  '@ngneat/falso': ^6.1.0
   '@types/bcrypt': ^5.0.0
   '@types/express': ^4.17.13
   '@types/express-session': ^1.17.5
@@ -81,6 +82,7 @@ devDependencies:
   '@nestjs/cli': 9.1.3
   '@nestjs/schematics': 9.0.3_typescript@4.8.3
   '@nestjs/testing': 9.1.1_mrvf6oiohgioswfsj2oeprwxai
+  '@ngneat/falso': 6.1.0
   '@types/bcrypt': 5.0.0
   '@types/express': 4.17.14
   '@types/express-session': 1.17.5
@@ -96,7 +98,7 @@ devDependencies:
   prettier: 2.7.1
   source-map-support: 0.5.21
   supertest: 6.2.4
-  ts-jest: 28.0.5_4oauc7za7wifzxb2b3ao3cxxiy
+  ts-jest: 28.0.5_tqhzqdxar3llnefpxvbiqz3aay
   ts-loader: 9.4.1_kb3egcnme7w23lfa5xodfjfhge
   ts-node: 10.9.1_ao52im6kiihokc7tdj7weudhra
   tsconfig-paths: 4.0.0
@@ -122,7 +124,7 @@ packages:
         optional: true
     dependencies:
       ajv: 8.11.0
-      ajv-formats: 2.1.1
+      ajv-formats: 2.1.1_ajv@8.11.0
       jsonc-parser: 3.1.0
       rxjs: 6.6.7
       source-map: 0.7.4
@@ -138,7 +140,7 @@ packages:
         optional: true
     dependencies:
       ajv: 8.11.0
-      ajv-formats: 2.1.1
+      ajv-formats: 2.1.1_ajv@8.11.0
       chokidar: 3.5.3
       jsonc-parser: 3.1.0
       rxjs: 6.6.7
@@ -155,7 +157,7 @@ packages:
         optional: true
     dependencies:
       ajv: 8.11.0
-      ajv-formats: 2.1.1
+      ajv-formats: 2.1.1_ajv@8.11.0
       chokidar: 3.5.3
       jsonc-parser: 3.1.0
       rxjs: 6.6.7
@@ -1127,6 +1129,13 @@ packages:
       uuid: 8.3.2
     dev: false
 
+  /@ngneat/falso/6.1.0:
+    resolution: {integrity: sha512-eka5OxW65B1RphpLJ04Pd4PEkrmTab/Ut50K0OceAdM+O+MZA7YF9xo51uZgkxbhg8bJ5zEh5vucDRMSofcqsw==}
+    dependencies:
+      seedrandom: 3.0.5
+      uuid: 8.3.2
+    dev: true
+
   /@nodelib/fs.scandir/2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -1660,8 +1669,10 @@ packages:
       - supports-color
     dev: false
 
-  /ajv-formats/2.1.1:
+  /ajv-formats/2.1.1_ajv@8.11.0:
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
+    peerDependencies:
+      ajv: ^8.0.0
     peerDependenciesMeta:
       ajv:
         optional: true
@@ -4637,6 +4648,10 @@ packages:
       ajv: 6.12.6
       ajv-keywords: 3.5.2_ajv@6.12.6
 
+  /seedrandom/3.0.5:
+    resolution: {integrity: sha512-8OwmbklUNzwezjGInmZ+2clQmExQPvomqjL7LFqOYqtmuxRgQYqOD3mHaU+MvZn5FLUeVxVfQjwLZW/n/JFuqg==}
+    dev: true
+
   /semver/5.7.1:
     resolution: {integrity: sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==}
     hasBin: true
@@ -5033,7 +5048,7 @@ packages:
     hasBin: true
     dev: true
 
-  /ts-jest/28.0.5_4oauc7za7wifzxb2b3ao3cxxiy:
+  /ts-jest/28.0.5_tqhzqdxar3llnefpxvbiqz3aay:
     resolution: {integrity: sha512-Sx9FyP9pCY7pUzQpy4FgRZf2bhHY3za576HMKJFs+OnQ9jS96Du5vNsDKkyedQkik+sEabbKAnCliv9BEsHZgQ==}
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
     hasBin: true
@@ -5051,6 +5066,7 @@ packages:
       esbuild:
         optional: true
     dependencies:
+      '@babel/core': 7.19.1
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
       jest: 28.1.2_4echt27za7uk6ezjshmbxcfmgy
@@ -5308,7 +5324,6 @@ packages:
   /uuid/8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
     hasBin: true
-    dev: false
 
   /uuid/9.0.0:
     resolution: {integrity: sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==}

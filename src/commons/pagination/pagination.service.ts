@@ -2,6 +2,7 @@ import { ObjectLiteral, Repository } from 'typeorm';
 import { PageOptionsDto }            from './page-options.dto';
 import { PageDto }                   from './page.dto';
 import PageMetaDto                   from './page-meta.dto';
+import { Logger }                    from '@nestjs/common';
 
 interface PaginationServiceOptions {
   entityName?: string,
@@ -9,6 +10,7 @@ interface PaginationServiceOptions {
 }
 
 export abstract class PaginationService<T extends ObjectLiteral> {
+  protected logger = new Logger(PaginationService.name);
   protected readonly entityName: string;
   protected orderBy: string;
 
