@@ -6,6 +6,7 @@ import { ProjectModule }               from './project/project.module';
 import { TypeOrmModule }               from '@nestjs/typeorm';
 import { User }                        from './user/entities/user.entity';
 import getConfig                       from '../config';
+import { Entities as ProjectEntities } from './project/entities';
 
 @Module({
   imports:     [
@@ -21,6 +22,7 @@ import getConfig                       from '../config';
         database:    conf.getOrThrow<string>('DB_NAME'),
         entities:    [
           User,
+          ...ProjectEntities,
         ],
         synchronize: conf.getOrThrow<boolean>('DB_SYNC'),
       } ),

@@ -4,10 +4,13 @@ import { Repository }                      from 'typeorm';
 import { InjectRepository }                from '@nestjs/typeorm';
 import { CreateBuildingDto }               from '../dtos/create-building.dto';
 import { WorkFront }                       from '../entities/work-front.entity';
+import { SprintService }                   from './sprint.service';
+import { CreateProjectDto }                from '../dtos/create-project.dto';
 
 @Injectable()
 export class BuildingService {
-  constructor(@InjectRepository(Building) protected repo: Repository<Building>) {}
+  constructor(@InjectRepository(Building) protected repo: Repository<Building>,
+              protected sprintService: SprintService) {}
 
   /** BUILDING **/
   public async create(dto: CreateBuildingDto): Promise<Building> {
@@ -17,7 +20,7 @@ export class BuildingService {
 
   public async findOneOrFail(id: number): Promise<Building> {
     return await this.repo.findOneOrFail({
-      relations: [ 'workFronts', 'workFronts.progresses' ],
+      relations: [ 'workFronts', 'sprints' ],
       where:     { id },
     });
   }

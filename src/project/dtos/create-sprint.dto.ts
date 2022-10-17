@@ -6,10 +6,5 @@ export class CreateSprintDto {
   @IsDate()
   @Transform(({ value }): Date => new Date(value))
   @ApiProperty()
-  start: Date;
-
-  @IsDate()
-  @Transform(({ value }): Date => new Date(value))
-  @ApiProperty()
-  end: Date;
+  week: Date;
 }

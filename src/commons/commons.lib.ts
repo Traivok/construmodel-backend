@@ -5,5 +5,5 @@ export function IsNil(arg: any): boolean {
 }
 
 export function entitiesToDTOs<DTO, ENT>(entities: ENT[], cls: ClassConstructor<DTO>): DTO[] {
-  return entities?.map(e => plainToInstance(cls, e, { excludeExtraneousValues: true})) ?? [];
+  return entities?.map(e => plainToInstance(cls, e, { excludeExtraneousValues: true })) ?? [];
 }

@@ -1,9 +1,10 @@
-import { Expose, Transform } from 'class-transformer';
+import { Expose, plainToInstance, Transform } from 'class-transformer';
+import { WorkFrontMinimalDto }                from './work-front.dto';
 
 export class ProgressDto {
-  @Transform(({ obj }): number => obj.workFrontId)
+  @Transform(({ obj }): WorkFrontMinimalDto => plainToInstance(WorkFrontMinimalDto, obj.workFront, { excludeExtraneousValues: true }))
   @Expose()
-  workFrontId: number;
+  workFront: WorkFrontMinimalDto;
 
   @Transform(({ obj }): number => obj.sprintId)
   @Expose()
