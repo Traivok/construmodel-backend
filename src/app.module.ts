@@ -7,6 +7,8 @@ import { TypeOrmModule }               from '@nestjs/typeorm';
 import { User }                        from './user/entities/user.entity';
 import getConfig                       from '../config';
 import { Entities as ProjectEntities } from './project/entities';
+import { ProgressSubscriber }          from './project/subscribers/progress.subscriber';
+import { SprintSubscriber }            from './project/subscribers/sprint.subscriber';
 
 @Module({
   imports:     [
@@ -23,6 +25,10 @@ import { Entities as ProjectEntities } from './project/entities';
         entities:    [
           User,
           ...ProjectEntities,
+        ],
+        subscribers: [
+          ProgressSubscriber,
+          SprintSubscriber,
         ],
         synchronize: conf.getOrThrow<boolean>('DB_SYNC'),
       } ),
