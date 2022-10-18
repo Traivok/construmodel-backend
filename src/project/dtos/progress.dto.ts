@@ -6,7 +6,9 @@ export class ProgressDto {
   @Expose()
   workFront: WorkFrontMinimalDto;
 
-  @Transform(({ obj }): number => obj.sprintId)
+  @Expose()
+  workFrontId: number;
+
   @Expose()
   sprintId: number;
 

@@ -1,6 +1,6 @@
-import { EntitySubscriberInterface, EventSubscriber, InsertEvent } from 'typeorm';
-import { BadRequestException, Logger }                             from '@nestjs/common';
-import { Sprint }                                                  from '../entities/sprint.entity';
+import { EntitySubscriberInterface, EventSubscriber, InsertEvent, UpdateEvent } from 'typeorm';
+import { BadRequestException, Logger }                                          from '@nestjs/common';
+import { Sprint }                                                               from '../entities/sprint.entity';
 
 @EventSubscriber()
 export class SprintSubscriber implements EntitySubscriberInterface<Sprint> {
@@ -23,4 +23,18 @@ export class SprintSubscriber implements EntitySubscriberInterface<Sprint> {
       throw new BadRequestException('Overlaps with existing sprint');
     }
   }
+
+  // public async beforeUpdate(event: UpdateEvent<Sprint>): Promise<void> {
+  //   if (event.entity === undefined)
+  //     return;
+  //
+  //   if (event.updatedColumns.find(c => c === ''))
+  //
+  //   const entity = event.entity;
+  //   const others = await event.manager.find(Sprint, {
+  //     order: { start: 'ASC' },
+  //     where: { buildingId: entity.buildingId },
+  //   });
+  //
+  // }
 }

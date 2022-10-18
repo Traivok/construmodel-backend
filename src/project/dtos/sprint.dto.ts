@@ -18,4 +18,7 @@ export class SprintDto {
   @Expose()
   @Transform(({ obj }): ProgressDto[] => entitiesToDTOs(obj.progresses, ProgressDto))
   progresses: ProgressDto[];
+
+  @Expose()
+  status: string;
 }

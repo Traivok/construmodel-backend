@@ -5,7 +5,6 @@ import { InjectRepository }                from '@nestjs/typeorm';
 import { CreateBuildingDto }               from '../dtos/create-building.dto';
 import { WorkFront }                       from '../entities/work-front.entity';
 import { SprintService }                   from './sprint.service';
-import { CreateProjectDto }                from '../dtos/create-project.dto';
 
 @Injectable()
 export class BuildingService {
@@ -20,14 +19,14 @@ export class BuildingService {
 
   public async findOneOrFail(id: number): Promise<Building> {
     return await this.repo.findOneOrFail({
-      relations: [ 'workFronts', 'sprints' ],
+      relations: [ 'workFronts', 'sprints', 'sprints.progresses' ],
       where:     { id },
     });
   }
 
   public async findAll(): Promise<Building[]> {
     return await this.repo.find({
-      relations: [ 'workFronts', 'workFronts.progresses' ],
+      relations: [ 'workFronts', 'sprints', 'sprints.progresses' ],
     });
   }
 
