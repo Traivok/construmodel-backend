@@ -1,6 +1,7 @@
 import { EntitySubscriberInterface, EventSubscriber, InsertEvent, UpdateEvent } from 'typeorm';
 import { BadRequestException, Logger }                                          from '@nestjs/common';
 import { Sprint }                                                               from '../entities/sprint.entity';
+import { isSunday }                                                             from 'date-fns/fp';
 
 @EventSubscriber()
 export class SprintSubscriber implements EntitySubscriberInterface<Sprint> {
@@ -17,24 +18,6 @@ export class SprintSubscriber implements EntitySubscriberInterface<Sprint> {
   }
 
   public async beforeInsert(event: InsertEvent<Sprint>): Promise<void> {
-    const entity = event.entity;
-    const others = await event.manager.findBy(Sprint, { buildingId: entity.buildingId });
-    if (others.some(o => SprintSubscriber.overlap(entity, o))) {
-      throw new BadRequestException('Overlaps with existing sprint');
-    }
+    event.entity.start.setHours(0, 0, 0, 0);
   }
-
-  // public async beforeUpdate(event: UpdateEvent<Sprint>): Promise<void> {
-  //   if (event.entity === undefined)
-  //     return;
-  //
-  //   if (event.updatedColumns.find(c => c === ''))
-  //
-  //   const entity = event.entity;
-  //   const others = await event.manager.find(Sprint, {
-  //     order: { start: 'ASC' },
-  //     where: { buildingId: entity.buildingId },
-  //   });
-  //
-  // }
 }

@@ -25,7 +25,7 @@ export class Building {
   @JoinTable({
     name:              'buildings_rel_work_fronts',
     joinColumn:        { name: 'building_id', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'category_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'work_front_name', referencedColumnName: 'name' },
   })
   workFronts?: WorkFront[];
 
@@ -61,7 +61,7 @@ export class Building {
   public get completion(): { actual: number, planned: number } {
     const sprint = this.currentSprint ?? this.previousSprint;
 
-    if (sprint === null)
+    if (sprint === null || !Array.isArray(sprint.progresses))
       return { actual: 1, planned: 1 };
 
     const { actual, planned } = sprint.progresses.reduce((prev: { actual: number, planned: number }, curr) => ( {

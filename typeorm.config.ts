@@ -8,12 +8,13 @@ const logger = new Logger('TypeormConfig');
 logger.log(`Connecting to database ${ config.DB_NAME } as ${ config.DB_USER }`);
 
 export default new DataSource({
-  type:        'postgres',
-  host:        'localhost',
-  database:    config.DB_NAME,
-  username:    config.DB_USER,
-  synchronize: config.DB_SYNC ?? false,
-  logging:     config.DB_LOG ?? false,
-  entities:    [ __dirname + '/src/**/*.entity{.ts,.ts}' ],
-  migrations:  [ __dirname + '/migrations/**/*{.ts,.js}' ],
+  type:          'postgres',
+  host:          'localhost',
+  database:      config.DB_NAME,
+  username:      config.DB_USER,
+  synchronize:   config.DB_SYNC ?? false,
+  migrationsRun: false,
+  logging:       config.DB_LOG ?? false,
+  entities:      [ __dirname + '/src/**/*.entity{.ts,.ts}' ],
+  migrations:    [ __dirname + '/migrations/**/*{.ts,.js}' ],
 });

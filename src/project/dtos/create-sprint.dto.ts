@@ -1,10 +1,11 @@
-import { IsDate }      from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
-import { Transform }   from 'class-transformer';
+import { IsDate }        from 'class-validator';
+import { ApiProperty }   from '@nestjs/swagger';
+import { Transform }     from 'class-transformer';
+import { SprintService } from '../services/sprint.service';
 
 export class CreateSprintDto {
   @IsDate()
-  @Transform(({ value }): Date => new Date(value))
+  @Transform(({ value }): Date => SprintService.forceSunday(new Date(value)))
   @ApiProperty()
-  week: Date;
+  start: Date;
 }

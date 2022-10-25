@@ -39,9 +39,9 @@ export class ProgressController {
   @Serialize(ProgressDto)
   @HttpCode(HttpStatus.OK)
   @ApiResponse({ status: HttpStatus.OK, type: ProgressDto, description: 'Successful update.' })
-  async updateFloor(@Query('workFrontId', ParseIntPipe) workFrontId: number,
+  async updateFloor(@Query('workFrontName') workFrontName: string,
                     @Query('sprintId', ParseIntPipe) sprintId: number,
                     @Body() dto: UpdateProgressDto): Promise<Progress> {
-    return await this.service.updateCurrentFloor(workFrontId, sprintId, dto);
+    return await this.service.updateCurrentFloor(workFrontName, sprintId, dto);
   }
 }

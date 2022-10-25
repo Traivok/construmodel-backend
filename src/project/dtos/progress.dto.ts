@@ -7,7 +7,7 @@ export class ProgressDto {
   workFront: WorkFrontMinimalDto;
 
   @Expose()
-  workFrontId: number;
+  workFrontName: number;
 
   @Expose()
   sprintId: number;

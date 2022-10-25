@@ -1,14 +1,7 @@
-import { ApiProperty }                                from '@nestjs/swagger';
-import { CreateBuildingDto }                          from './create-building.dto';
-import { IsNotEmptyObject, IsObject, ValidateNested } from 'class-validator';
-import { CreateMultipleSprintsDto }                   from './create-multiple-sprints.dto';
-import { Type }                                       from 'class-transformer';
+import { ApiProperty }        from '@nestjs/swagger';
+import { IsNumber, IsString } from 'class-validator';
 
-export class CreateProjectDto extends CreateBuildingDto {
-  @IsObject()
-  @IsNotEmptyObject()
-  @ValidateNested()
-  @Type(() => CreateMultipleSprintsDto)
-  @ApiProperty()
-  createMultipleSprintsDto: CreateMultipleSprintsDto;
+export class CreateProjectDto {
+  @ApiProperty({ type: 'file', required: true })
+  file: Express.Multer.File;
 }

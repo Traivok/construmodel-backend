@@ -17,7 +17,9 @@ specifiers:
   '@types/express': ^4.17.13
   '@types/express-session': ^1.17.5
   '@types/jest': 28.1.4
+  '@types/multer': ^1.4.7
   '@types/node': ^16.0.0
+  '@types/papaparse': ^5.3.5
   '@types/passport-jwt': ^3.0.6
   '@types/passport-local': ^1.0.34
   '@types/supertest': ^2.0.11
@@ -34,6 +36,7 @@ specifiers:
   eslint-plugin-prettier: ^4.0.0
   express-session: ^1.17.3
   jest: 28.1.2
+  papaparse: ^5.3.2
   passport: ^0.6.0
   passport-jwt: ^4.0.0
   passport-local: ^1.0.0
@@ -70,6 +73,7 @@ dependencies:
   eslint-plugin-align-assignments: 1.1.2_eslint@8.22.0
   eslint-plugin-align-import: 1.0.0
   express-session: 1.17.3
+  papaparse: 5.3.2
   passport: 0.6.0
   passport-jwt: 4.0.0
   passport-local: 1.0.0
@@ -89,7 +93,9 @@ devDependencies:
   '@types/express': 4.17.14
   '@types/express-session': 1.17.5
   '@types/jest': 28.1.4
+  '@types/multer': 1.4.7
   '@types/node': 16.11.59
+  '@types/papaparse': 5.3.5
   '@types/supertest': 2.0.12
   '@typescript-eslint/eslint-plugin': 5.38.0_w5kmi7lyl4dr4f5k3vygw7j7te
   '@typescript-eslint/parser': 5.38.0_76twfck5d7crjqrmw4yltga7zm
@@ -1326,8 +1332,20 @@ packages:
   /@types/mime/3.0.1:
     resolution: {integrity: sha512-Y4XFY5VJAuw0FgAqPNd6NNoV44jbq9Bz2L7Rh/J6jLTiHBSBJa9fxqQIvkIld4GsoDOcCbvzOUAbLPsSKKg+uA==}
 
+  /@types/multer/1.4.7:
+    resolution: {integrity: sha512-/SNsDidUFCvqqcWDwxv2feww/yqhNeTRL5CVoL3jU4Goc4kKEL10T7Eye65ZqPNi4HRx8sAEX59pV1aEH7drNA==}
+    dependencies:
+      '@types/express': 4.17.14
+    dev: true
+
   /@types/node/16.11.59:
     resolution: {integrity: sha512-6u+36Dj3aDzhfBVUf/mfmc92OEdzQ2kx2jcXGdigfl70E/neV21ZHE6UCz4MDzTRcVqGAM27fk+DLXvyDsn3Jw==}
+
+  /@types/papaparse/5.3.5:
+    resolution: {integrity: sha512-R1icl/hrJPFRpuYj9PVG03WBAlghJj4JW9Py5QdR8FFSxaLmZRyu7xYDCCBZIJNfUv3MYaeBbhBoX958mUTAaw==}
+    dependencies:
+      '@types/node': 16.11.59
+    dev: true
 
   /@types/parse-json/4.0.0:
     resolution: {integrity: sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==}
@@ -4210,6 +4228,10 @@ packages:
 
   /packet-reader/1.0.0:
     resolution: {integrity: sha512-HAKu/fG3HpHFO0AA8WE8q2g+gBJaZ9MG7fcKk+IJPLTGAD6Psw4443l+9DGRbOIh3/aXr7Phy0TjilYivJo5XQ==}
+    dev: false
+
+  /papaparse/5.3.2:
+    resolution: {integrity: sha512-6dNZu0Ki+gyV0eBsFKJhYr+MdQYAzFUGlBMNj3GNrmHxmz1lfRa24CjFObPXtjcetlOv5Ad299MhIK0znp3afw==}
     dev: false
 
   /parent-module/1.0.1:

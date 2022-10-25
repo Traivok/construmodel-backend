@@ -1,6 +1,7 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Building }                                                                 from './building.entity';
-import { Progress }                                                                 from './progress.entity';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import { Building }                                                                         from './building.entity';
+import { Progress }                                                                         from './progress.entity';
+import { nextSaturday }                                                                     from 'date-fns/fp';
 
 export enum SprintStatus {
   FUTURE  = 'FUTURE',
@@ -9,15 +10,16 @@ export enum SprintStatus {
 }
 
 @Entity('sprint')
+@Unique([ 'start', 'buildingId' ])
 export class Sprint {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: false })
+  /**
+   * @constraint should be a sunday
+   */
   start: Date;
-
-  @Column()
-  end: Date;
 
   @Column({ name: 'building_id' })
   buildingId: number;
@@ -29,8 +31,14 @@ export class Sprint {
   @OneToMany(() => Progress, progress => progress.sprint)
   progresses: Progress[];
 
+  public get end(): Date {
+    const date = nextSaturday(this.start);
+    date.setHours(23, 59, 59, 999);
+    return date;
+  }
+
   public get past(): boolean {
-    return this.end.getTime() < Date.now();
+    return this.start.getTime() < Date.now();
   }
 
   public get current(): boolean {
@@ -49,6 +57,14 @@ export class Sprint {
       return SprintStatus.FUTURE;
     else
       return SprintStatus.PAST;
+  }
+
+  /**
+   * @param other
+   * @return 0 if is the same, negative if this comes before than other, else positive
+   */
+  public compareTo(other: Sprint): number {
+    return this.start.getTime() - other.start.getTime();
   }
 }
 

@@ -13,11 +13,6 @@ export class ProgressSubscriber implements EntitySubscriberInterface<Progress> {
     return Progress;
   }
 
-  private static overlap(a: Sprint, b: Sprint): boolean {
-    return a.start >= b.start && a.start < b.end ||
-           a.end > b.start && a.end <= b.end;
-  }
-
   private static async checkFloors(progress: Progress, manager: EntityManager): Promise<void> {
     const sprint = await manager.findOneBy(Sprint, { id: progress.sprintId });
 

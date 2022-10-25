@@ -1,23 +1,36 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Post } from '@nestjs/common';
-import { ApiResponse, ApiTags }                                                    from '@nestjs/swagger';
-import { BuildingService }                                                         from '../services/building.service';
-import { WorkFrontService }                                                        from '../services/work-front.service';
-import { CatchEntityErrors }                                                       from '../../commons/decorators/catch-entity-errors.decorator';
-import { Serialize }                                                               from '../../commons/decorators/serialize.decorator';
-import { BuildingDto }                                                             from '../dtos/building.dto';
-import { CreateBuildingDto }                                                       from '../dtos/create-building.dto';
-import { Building }                                                                from '../entities/building.entity';
-import { WorkFrontDto }                                                            from '../dtos/work-front.dto';
-import { SprintDto }                                                               from '../dtos/sprint.dto';
-import { CreateSprintDto }                                                         from '../dtos/create-sprint.dto';
-import { Sprint }                                                                  from '../entities/sprint.entity';
-import { SprintService }                                                           from '../services/sprint.service';
-import { CreateMultipleSprintsDto }                                                from '../dtos/create-multiple-sprints.dto';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Logger,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  UploadedFile,
+  UseInterceptors,
+}                                            from '@nestjs/common';
+import { ApiConsumes, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { BuildingService }                   from '../services/building.service';
+import { WorkFrontService }                  from '../services/work-front.service';
+import { CatchEntityErrors }                 from '../../commons/decorators/catch-entity-errors.decorator';
+import { Serialize }                         from '../../commons/decorators/serialize.decorator';
+import { BuildingCompactDto, BuildingDto }   from '../dtos/building.dto';
+import { CreateBuildingDto }                 from '../dtos/create-building.dto';
+import { Building }                          from '../entities/building.entity';
+import { SprintService }                     from '../services/sprint.service';
+import { Express }                           from 'express';
+import { FileInterceptor }                   from '@nestjs/platform-express';
+import { CreateProjectDto }                  from '../dtos/create-project.dto';
 
 @ApiTags('building')
 @Controller('building')
 @CatchEntityErrors()
 export class BuildingController {
+
+  private logger = new Logger(BuildingController.name);
 
   constructor(protected buildingSrv: BuildingService,
               protected workFrontSrv: WorkFrontService,
@@ -33,8 +46,8 @@ export class BuildingController {
   }
 
   @Get()
-  @Serialize(BuildingDto)
-  @ApiResponse({ status: HttpStatus.OK, type: BuildingDto, isArray: true, description: 'Returns all Buildings' })
+  @Serialize(BuildingCompactDto)
+  @ApiResponse({ status: HttpStatus.OK, type: BuildingCompactDto, isArray: true, description: 'Returns all Buildings' })
   async getAll(): Promise<Building[]> {
     return await this.buildingSrv.findAll();
   }
@@ -46,39 +59,51 @@ export class BuildingController {
     return await this.buildingSrv.findOneOrFail(buildingId);
   }
 
-  /* WorkFront */
-  @Post(':buildingId/work-front/:workFrontId')
+  @Put(':buildingId/project')
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('file'))
+  @HttpCode(HttpStatus.CREATED)
   @Serialize(BuildingDto)
-  @HttpCode(HttpStatus.CREATED)
-  @ApiResponse({ status: HttpStatus.CREATED, type: WorkFrontDto, description: 'Successful creation.' })
-  async addWorkFront(@Param('buildingId', ParseIntPipe) buildingId: number,
-                     @Param('workFrontId', ParseIntPipe) workFrontId: number): Promise<Building> {
-    const building  = await this.buildingSrv.findOneOrFail(buildingId);
-    const workFront = await this.workFrontSrv.findOneOrFail(workFrontId);
+  @ApiResponse({ status: HttpStatus.CREATED, type: BuildingDto, description: 'Creates a project' })
+  async createProject(
+    @Param('buildingId', ParseIntPipe) buildingId: number,
+    @Body() body: CreateProjectDto,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<Building> {
+    const csv    = file.buffer.toString();
+    const parsed = this.buildingSrv.parseCsvProject(csv);
 
-    return await this.buildingSrv.addWorkFront(building, workFront);
+    await this.buildingSrv.createProject(buildingId, parsed);
+
+    return await this.buildingSrv.findOneOrFail(buildingId);
   }
 
-  /* Sprint */
-  @Post(':buildingId/sprint')
-  @Serialize(SprintDto)
-  @HttpCode(HttpStatus.CREATED)
-  @ApiResponse({ status: HttpStatus.CREATED, type: SprintDto, description: 'Successful creation.' })
-  async createSprint(@Param('buildingId', ParseIntPipe) buildingId: number,
-                     @Body() createSprintDto: CreateSprintDto): Promise<Sprint> {
-    const building = await this.buildingSrv.findOneOrFail(buildingId);
-    return await this.sprintSrv.create(createSprintDto, building);
-  }
 
-  @Post(':buildingId/sprints')
-  @Serialize(SprintDto)
-  @HttpCode(HttpStatus.CREATED)
-  @ApiResponse({ status: HttpStatus.CREATED, type: SprintDto, isArray: true, description: 'Successful creation.' })
-  async createMultipleSprints(@Param('buildingId', ParseIntPipe) buildingId: number,
-                              @Body() createMultipleSprints: CreateMultipleSprintsDto): Promise<Sprint[]> {
-    const building = await this.buildingSrv.findOneOrFail(buildingId);
+  // /* WorkFront */
+  // @Post(':buildingId/work-front/:workFrontId')
+  // @Serialize(BuildingDto)
+  // @HttpCode(HttpStatus.CREATED)
+  // @ApiResponse({ status: HttpStatus.CREATED, type: WorkFrontDto, description: 'Successful creation.' })
+  // async addWorkFront(@Param('buildingId', ParseIntPipe) buildingId: number,
+  //                    @Param('workFrontId', ParseIntPipe) workFrontId: number): Promise<Building> {
+  //   const building  = await this.buildingSrv.findOneOrFail(buildingId);
+  //   const workFront = await this.workFrontSrv.findOneOrFail(workFrontId);
+  //
+  //   return await this.buildingSrv.addWorkFront(building, workFront);
+  // }
+  //
+  // /* Sprint */
+  // @Post(':buildingId/sprint')
+  // @Serialize(SprintDto)
+  // @HttpCode(HttpStatus.CREATED)
+  // @ApiResponse({ status: HttpStatus.CREATED, type: SprintDto, description: 'Successful creation.' })
+  // async createSprint(@Param('buildingId', ParseIntPipe) buildingId: number,
+  //                    @Body() createSprintDto: CreateSprintDto): Promise<Sprint> {
+  //   const building = await this.buildingSrv.findOneOrFail(buildingId);
+  //   return await this.sprintSrv.create(createSprintDto, building);
+  // }
+}
 
-    return await this.sprintSrv.createBatch(createMultipleSprints, building);
-  }
-
+function PUT(arg0: string) {
+  throw new Error('Function not implemented.');
 }

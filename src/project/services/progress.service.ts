@@ -23,9 +23,9 @@ export class ProgressService {
     return await this.repo.save(progress);
   }
 
-  async updateCurrentFloor(workFrontId: number, sprintId: number, dto: UpdateProgressDto): Promise<Progress> {
+  async updateCurrentFloor(workFrontName: string, sprintId: number, dto: UpdateProgressDto): Promise<Progress> {
     const progress: Progress = await this.repo.findOneOrFail({
-      where: { workFrontId, sprintId },
+      where: { workFrontName, sprintId },
     });
 
     return await this.repo.save(this.repo.merge(progress, dto));

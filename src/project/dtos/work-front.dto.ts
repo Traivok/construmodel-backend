@@ -5,9 +5,6 @@ import { entitiesToDTOs }                  from '../../commons/commons.lib';
 
 export class WorkFrontDto {
   @Expose()
-  id: number;
-
-  @Expose()
   name: string;
 
   @Transform(({ obj }): BuildingMinimalDto[] => entitiesToDTOs(obj.buildings, BuildingMinimalDto))
@@ -16,9 +13,6 @@ export class WorkFrontDto {
 }
 
 export class WorkFrontMinimalDto {
-  @Expose()
-  id: number;
-
   @Expose()
   name: string;
 }

@@ -5,11 +5,11 @@ import { Sprint }                                                               
 
 @Entity('progress')
 export class Progress {
-  @PrimaryColumn({ name: 'work_front_id' })
-  workFrontId: number;
+  @PrimaryColumn({ name: 'work_front_name' })
+  workFrontName: string;
 
   @ManyToOne(() => WorkFront, workFront => workFront.progresses)
-  @JoinColumn({ name: 'work_front_id' })
+  @JoinColumn({ name: 'work_front_name' })
   workFront!: WorkFront;
 
   @PrimaryColumn({ name: 'sprint_id' })
@@ -24,5 +24,4 @@ export class Progress {
 
   @Column({ nullable: false, type: 'float', name: 'planned_floor' })
   plannedFloor: number;
-
 }

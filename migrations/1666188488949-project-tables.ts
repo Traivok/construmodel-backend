@@ -1,15 +1,15 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class projectTables1665778632364 implements MigrationInterface {
-    name = 'projectTables1665778632364'
+export class projectTables1666188488949 implements MigrationInterface {
+    name = 'projectTables1666188488949'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
             CREATE TABLE "sprint" (
                 "id" SERIAL NOT NULL,
                 "start" TIMESTAMP NOT NULL,
-                "end" TIMESTAMP NOT NULL,
                 "building_id" integer NOT NULL,
+                CONSTRAINT "UQ_55694cdb00394029546b808fbaf" UNIQUE ("start", "building_id"),
                 CONSTRAINT "PK_f371c7b5c4bc62fb2ba2bdb9f61" PRIMARY KEY ("id")
             )
         `);

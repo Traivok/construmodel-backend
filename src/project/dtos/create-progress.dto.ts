@@ -1,10 +1,10 @@
-import { ApiProperty }          from '@nestjs/swagger';
-import { IsNumber, IsOptional } from 'class-validator';
+import { ApiProperty }                    from '@nestjs/swagger';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateProgressDto {
-  @IsNumber()
+  @IsString()
   @ApiProperty()
-  workFrontId: number;
+  workFrontName: string;
 
   @IsNumber()
   @ApiProperty()

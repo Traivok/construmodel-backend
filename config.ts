@@ -11,6 +11,7 @@ export const devConfig: Config = {
   ...baseConfig,
   COOKIE_SECRET: 'fixme', // FIXME TODO
   DB_NAME:       'cm_dev',
+  DB_SYNC:       false,
   DB_LOG:        true,
 };
 

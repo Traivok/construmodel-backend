@@ -21,4 +21,22 @@ export class SprintDto {
 
   @Expose()
   status: string;
+
+}
+
+export class SprintCompactDto {
+  @Expose()
+  id: number;
+
+  @Expose()
+  start: Date;
+
+  @Expose()
+  end: Date;
+
+  @Expose()
+  buildingId: number;
+
+  @Expose()
+  status: string;
 }

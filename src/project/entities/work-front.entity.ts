@@ -5,7 +5,7 @@ import {
   JoinColumn, JoinTable,
   ManyToMany,
   ManyToOne,
-  OneToMany,
+  OneToMany, PrimaryColumn,
   PrimaryGeneratedColumn, Unique,
 }                   from 'typeorm';
 import { Exclude }  from 'class-transformer';
@@ -14,12 +14,8 @@ import { Building } from './building.entity';
 import { Progress } from './progress.entity';
 
 @Entity('work_front')
-@Unique([ 'name' ])
 export class WorkFront {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column()
+  @PrimaryColumn()
   name: string;
 
   @ManyToMany(() => Building, building => building.workFronts)
