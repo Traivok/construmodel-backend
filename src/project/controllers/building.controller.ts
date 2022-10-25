@@ -46,8 +46,8 @@ export class BuildingController {
   }
 
   @Get()
-  @Serialize(BuildingCompactDto)
-  @ApiResponse({ status: HttpStatus.OK, type: BuildingCompactDto, isArray: true, description: 'Returns all Buildings' })
+  @Serialize(BuildingDto)
+  @ApiResponse({ status: HttpStatus.OK, type: BuildingDto, isArray: true, description: 'Returns all Buildings' })
   async getAll(): Promise<Building[]> {
     return await this.buildingSrv.findAll();
   }
