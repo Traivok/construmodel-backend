@@ -102,7 +102,6 @@ export class BuildingService {
         await entityManager.delete<Sprint>(Sprint, building.sprints.map(({ id }) => ( { id } )));
       }
 
-
       building.sprints = entityManager.create<Sprint>(Sprint, parsed.sprints.map(s => ( {
         ...s,
         buildingId: building.id,
