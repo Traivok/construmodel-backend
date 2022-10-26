@@ -14,7 +14,6 @@ import { WorkFront }                                                 from './wor
                     'pl.floor AS planned_floor',
                     'COALESCE(pg.floor, 0) AS current_floor',
                     'COALESCE(pg.date, (s.start + \'8d23h59m59s999ms\'::interval)) AS progression_date',
-                    '(COALESCE(pg.floor, 0) < pl.floor) AS late',
                   ])
                   .from(Plan, 'pl')
                   .innerJoin(Sprint, 's', 's.id = pl.sprintId')
@@ -52,7 +51,4 @@ export class ProgressView {
 
   @ViewColumn({ name: 'progression_date' })
   progressionDate: Date;
-
-  @ViewColumn()
-  late: boolean;
 }

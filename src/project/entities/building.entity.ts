@@ -76,6 +76,17 @@ export class Building {
     if (sprint === null || this.workFrontCount === undefined)
       return [ 1, 1 ];
 
+    if (Array.isArray(sprint.progressesView)) {
+      const [ planned, actual ] = sprint.progressesView.reduce((prev, curr) => [
+        prev[0] + curr.plannedFloor,
+        prev[1] + curr.currentFloor,
+      ], [ 0., 0. ]);
+
+      const tmp = this.workFrontCount * this.floorCount;
+
+      return [ planned / tmp, actual / tmp ];
+    }
+
     return [ 0, 0 ];
   }
 
@@ -85,5 +96,10 @@ export class Building {
 
   public get actualCompletion(): number {
     return this.completion[1];
+  }
+
+  public get late(): boolean {
+    const [ planned, actual ] = this.completion;
+    return actual < planned;
   }
 }

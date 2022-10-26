@@ -25,17 +25,21 @@ export class BuildingService {
     return await this.repo.save(building);
   }
 
-  public async findOneOrFail(id: number): Promise<Building> {
+  public async findOneOrFail(id: number, fullLoad: boolean = true): Promise<Building> {
+    const base      = [ 'workFronts', 'sprints', 'sprints.plans' ];
+    const relations = fullLoad ? [ ...base, 'sprints.progressesView' ] : base;
+
     return await this.repo.findOneOrFail({
-      relations: [ 'workFronts', 'sprints', 'sprints.plans' ],
-      where:     { id },
+      relations,
+      where: { id },
     });
   }
 
-  public async findAll(): Promise<Building[]> {
-    return await this.repo.find({
-      relations: [ 'workFronts', 'sprints', 'sprints.plans' ],
-    });
+  public async findAll(fullLoad: boolean = true): Promise<Building[]> {
+    const base      = [ 'workFronts', 'sprints', 'sprints.plans' ];
+    const relations = fullLoad ? [ ...base, 'sprints.progressesView' ] : base;
+
+    return await this.repo.find({ relations });
   }
 
 
@@ -108,7 +112,7 @@ export class BuildingService {
       building.workFronts = entityManager.create<WorkFront>(WorkFront, parsed.workFronts);
       building.workFronts = await entityManager.save<WorkFront>(building.workFronts);
 
-      const createProgresses       = this.extractProgresses(parsed.data, parsed.dateColName, building.workFronts, building.sprints);
+      const createProgresses   = this.extractProgresses(parsed.data, parsed.dateColName, building.workFronts, building.sprints);
       const progresses: Plan[] = entityManager.create<Plan>(Plan, createProgresses);
       await entityManager.save<Plan>(progresses);
 

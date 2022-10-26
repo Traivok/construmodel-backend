@@ -1,4 +1,3 @@
-import { Sprint } from '../entities/sprint.entity';
 import { Expose } from 'class-transformer';
 
 export class ProgressDto {
@@ -9,9 +8,6 @@ export class ProgressDto {
   sprintId: number;
 
   @Expose()
-  sprint!: Sprint;
-
-  @Expose()
   plannedFloor: number;
 
   @Expose()
@@ -19,8 +15,4 @@ export class ProgressDto {
 
   @Expose()
   progressionDate: Date;
-
-  @Expose()
-  late: boolean;
-
 }
