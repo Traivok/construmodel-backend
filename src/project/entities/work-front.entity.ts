@@ -1,17 +1,8 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn, JoinTable,
-  ManyToMany,
-  ManyToOne,
-  OneToMany, PrimaryColumn,
-  PrimaryGeneratedColumn, Unique,
-}                   from 'typeorm';
-import { Exclude }  from 'class-transformer';
-import { Logger }   from '@nestjs/common';
-import { Building } from './building.entity';
-import { Progress } from './progress.entity';
+import { Entity, ManyToMany, OneToMany, PrimaryColumn } from 'typeorm';
+import { Building }                                     from './building.entity';
+import { Plan }                                         from './plan.entity';
+import { Execution }                                    from './execution.entity';
+import { ProgressView }                                 from './progress.view.entity';
 
 @Entity('work_front')
 export class WorkFront {
@@ -21,6 +12,12 @@ export class WorkFront {
   @ManyToMany(() => Building, building => building.workFronts)
   buildings?: Building[];
 
-  @OneToMany(() => Progress, progress => progress.workFront)
-  progresses: Progress[];
+  @OneToMany(() => Plan, plan => plan.workFront)
+  plans: Plan[];
+
+  @OneToMany(() => Execution, execution => execution.workFront)
+  executions: Execution[];
+
+  @OneToMany(() => ProgressView, progress => progress.workFront)
+  progressesView: ProgressView[];
 }

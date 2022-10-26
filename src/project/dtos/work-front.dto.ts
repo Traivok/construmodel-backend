@@ -11,8 +11,3 @@ export class WorkFrontDto {
   @Expose()
   buildings: BuildingMinimalDto[];
 }
-
-export class WorkFrontMinimalDto {
-  @Expose()
-  name: string;
-}

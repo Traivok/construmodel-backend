@@ -1,8 +1,7 @@
 import { Expose, plainToInstance, Transform } from 'class-transformer';
 import { entitiesToDTOs }                     from '../../commons/commons.lib';
-import { WorkFrontMinimalDto }                from './work-front.dto';
+import { WorkFrontDto }                       from './work-front.dto';
 import { SprintCompactDto, SprintDto }        from './sprint.dto';
-import { Sprint }                             from '../entities/sprint.entity';
 
 export class BuildingDto {
   @Expose()
@@ -15,8 +14,8 @@ export class BuildingDto {
   floorCount: number;
 
   @Expose()
-  @Transform(({ obj }): WorkFrontMinimalDto[] => entitiesToDTOs(obj.workFronts, WorkFrontMinimalDto))
-  workFronts: WorkFrontMinimalDto[];
+  @Transform(({ obj }): WorkFrontDto[] => entitiesToDTOs(obj.workFronts, WorkFrontDto))
+  workFronts: WorkFrontDto[];
 
   @Expose()
   @Transform(({ obj }): SprintDto[] => entitiesToDTOs(obj.sprints, SprintDto))
@@ -35,15 +34,12 @@ export class BuildingDto {
   nextSprint: SprintDto | null;
 
   @Expose()
-  createdAt: Date;
-
-  @Expose()
-  @Transform(({ obj }): number => obj.completion.planned)
+  @Transform(({ obj }): number => obj.plannedCompletion)
   plannedCompletion: number;
 
-  @Expose()
-  @Transform(({ obj }): number => obj.completion.actual)
-  actualCompletion: number;
+  // @Expose()
+  // @Transform(({ obj }): number => obj.completion.actual)
+  // actualCompletion: number;
 
   @Expose()
   late: boolean;
@@ -75,15 +71,14 @@ export class BuildingCompactDto {
   nextSprint: SprintCompactDto | null;
 
   @Expose()
-  @Transform(({ obj }): number => obj.completion.planned)
+  @Transform(({ obj }): number => obj.plannedCompletion)
   plannedCompletion: number;
 
-  @Expose()
-  @Transform(({ obj }): number => obj.completion.actual)
-  actualCompletion: number;
+  // @Transform(({ obj }): number => obj.completion.actual)
+  // actualCompletion: number;
 
-  @Expose()
-  late: boolean;
+  // @Expose()
+  // late: boolean;
 }
 
 export class BuildingMinimalDto {

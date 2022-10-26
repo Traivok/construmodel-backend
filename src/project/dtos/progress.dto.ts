@@ -1,11 +1,7 @@
-import { Expose, plainToInstance, Transform } from 'class-transformer';
-import { WorkFrontMinimalDto }                from './work-front.dto';
+import { Sprint } from '../entities/sprint.entity';
+import { Expose } from 'class-transformer';
 
 export class ProgressDto {
-  @Transform(({ obj }): WorkFrontMinimalDto => plainToInstance(WorkFrontMinimalDto, obj.workFront, { excludeExtraneousValues: true }))
-  @Expose()
-  workFront: WorkFrontMinimalDto;
-
   @Expose()
   workFrontName: string;
 
@@ -13,8 +9,18 @@ export class ProgressDto {
   sprintId: number;
 
   @Expose()
-  currentFloor: number;
+  sprint!: Sprint;
 
   @Expose()
   plannedFloor: number;
+
+  @Expose()
+  currentFloor: number;
+
+  @Expose()
+  progressionDate: Date;
+
+  @Expose()
+  late: boolean;
+
 }

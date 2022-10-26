@@ -3,6 +3,7 @@ import { Exclude }                                                              
 import { Logger }                                                                                     from '@nestjs/common';
 import { WorkFront }                                                                                  from './work-front.entity';
 import { Sprint }                                                                                     from './sprint.entity';
+import { Execution }                                                                                  from './execution.entity';
 
 @Entity('building')
 export class Building {
@@ -32,6 +33,9 @@ export class Building {
   @OneToMany(() => Sprint, sprint => sprint.building)
   sprints: Sprint[];
 
+  @OneToMany(() => Execution, progress => progress.building)
+  executions: Execution[];
+
   public get currentSprint(): Sprint | null {
     if (!Array.isArray(this.sprints) || this.sprints.length === 0)
       return null;
@@ -58,25 +62,28 @@ export class Building {
              .find(s => s.past) ?? null;
   }
 
-  public get completion(): { actual: number, planned: number } {
-    const sprint = this.currentSprint ?? this.previousSprint;
 
-    if (sprint === null || !Array.isArray(sprint.progresses))
-      return { actual: 1, planned: 1 };
-
-    const { actual, planned } = sprint.progresses.reduce((prev: { actual: number, planned: number }, curr) => ( {
-      actual:  prev.actual + curr.currentFloor,
-      planned: prev.planned + curr.plannedFloor,
-    } ), { actual: .0, planned: .0 });
-
-    return {
-      actual:  actual / ( this.floorCount * sprint.progresses.length ),
-      planned: planned / ( this.floorCount * sprint.progresses.length ),
-    };
+  public get workFrontCount(): number | undefined {
+    return this.workFronts?.length;
   }
 
-  public get late(): boolean {
-    const { actual, planned } = this.completion;
-    return planned > actual;
+  /**
+   * @return [planned, actual]
+   */
+  private get completion(): [ number, number ] {
+    const sprint = this.currentSprint ?? this.previousSprint;
+
+    if (sprint === null || this.workFrontCount === undefined)
+      return [ 1, 1 ];
+
+    return [ 0, 0 ];
+  }
+
+  public get plannedCompletion(): number {
+    return this.completion[0];
+  }
+
+  public get actualCompletion(): number {
+    return this.completion[1];
   }
 }

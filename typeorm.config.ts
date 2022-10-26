@@ -15,6 +15,6 @@ export default new DataSource({
   synchronize:   config.DB_SYNC ?? false,
   migrationsRun: false,
   logging:       config.DB_LOG ?? false,
-  entities:      [ __dirname + '/src/**/*.entity{.ts,.ts}' ],
+  entities:      [ __dirname + '/src/**/*{.entity,.view.entity}{.ts,.ts}' ],
   migrations:    [ __dirname + '/migrations/**/*{.ts,.js}' ],
 });

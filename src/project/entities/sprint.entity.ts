@@ -1,7 +1,8 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, Unique } from 'typeorm';
 import { Building }                                                                         from './building.entity';
-import { Progress }                                                                         from './progress.entity';
+import { Plan }                                                                             from './plan.entity';
 import { nextSaturday }                                                                     from 'date-fns/fp';
+import { ProgressView }                                                                     from './progress.view.entity';
 
 export enum SprintStatus {
   FUTURE  = 'FUTURE',
@@ -28,8 +29,11 @@ export class Sprint {
   @JoinColumn({ name: 'building_id' })
   building: Building;
 
-  @OneToMany(() => Progress, progress => progress.sprint)
-  progresses: Progress[];
+  @OneToMany(() => Plan, plan => plan.sprint)
+  plans?: Plan[];
+
+  @OneToMany(() => ProgressView, progress => progress.sprint)
+  progressesView?: ProgressView[];
 
   public get end(): Date {
     const date = nextSaturday(this.start);

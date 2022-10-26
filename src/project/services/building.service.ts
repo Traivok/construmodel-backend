@@ -9,9 +9,7 @@ import { WorkFrontService }                                     from './work-fro
 import { parse }                                                from 'papaparse';
 import { ParsedProjectInterface }                               from '../interfaces/parsed-project.interface';
 import { Sprint }                                               from '../entities/sprint.entity';
-import { CreateSprintDto }                                      from '../dtos/create-sprint.dto';
-import { async }                                                from 'rxjs';
-import { Progress }                                             from '../entities/progress.entity';
+import { Plan }                                                 from '../entities/plan.entity';
 
 @Injectable()
 export class BuildingService {
@@ -19,9 +17,7 @@ export class BuildingService {
   private readonly logger = new Logger(BuildingService.name);
 
   constructor(@InjectRepository(Building) protected repo: Repository<Building>,
-              @InjectDataSource() protected dataSource: DataSource,
-              protected workFrontSrv: WorkFrontService,
-              protected sprintsSrv: SprintService) {}
+              @InjectDataSource() protected dataSource: DataSource) {}
 
   /** BUILDING **/
   public async create(dto: CreateBuildingDto): Promise<Building> {
@@ -31,14 +27,14 @@ export class BuildingService {
 
   public async findOneOrFail(id: number): Promise<Building> {
     return await this.repo.findOneOrFail({
-      relations: [ 'workFronts', 'sprints', 'sprints.progresses' ],
+      relations: [ 'workFronts', 'sprints', 'sprints.plans' ],
       where:     { id },
     });
   }
 
   public async findAll(): Promise<Building[]> {
     return await this.repo.find({
-      relations: [ 'workFronts', 'sprints', 'sprints.progresses' ],
+      relations: [ 'workFronts', 'sprints', 'sprints.plans' ],
     });
   }
 
@@ -76,8 +72,8 @@ export class BuildingService {
     }
   }
 
-  public extractProgresses(data: { [key: string]: string }[], dateColName: string, workFronts: WorkFront[], sprints: Sprint[]): DeepPartial<Progress>[] {
-    return data.map((datum): DeepPartial<Progress[]> => {
+  public extractProgresses(data: { [key: string]: string }[], dateColName: string, workFronts: WorkFront[], sprints: Sprint[]): DeepPartial<Plan>[] {
+    return data.map((datum): DeepPartial<Plan[]> => {
       const date = this.ptDateStrToDate(datum[dateColName]);
 
       const sprint: Sprint | undefined = sprints.find(s => date.toDateString() === s.start.toDateString());
@@ -86,8 +82,8 @@ export class BuildingService {
         return [];
 
       return workFronts.map(({ name: workFrontName }) => ( {
-        sprintId:     sprint.id,
-        plannedFloor: parseFloat(datum[workFrontName]) ?? 0.0,
+        sprintId: sprint.id,
+        floor:    parseFloat(datum[workFrontName]) ?? 0.0,
         workFrontName,
       } ));
     }).flat();
@@ -98,7 +94,7 @@ export class BuildingService {
 
     return await this.dataSource.manager.transaction(async (entityManager) => {
       if (Array.isArray(building.sprints) && building.sprints.length > 0) {
-        await entityManager.delete<Progress>(Progress, building.sprints.map(({ id }) => ( { sprintId: id } )));
+        await entityManager.delete<Plan>(Plan, building.sprints.map(({ id }) => ( { sprintId: id } )));
         await entityManager.delete<Sprint>(Sprint, building.sprints.map(({ id }) => ( { id } )));
       }
 
@@ -113,8 +109,8 @@ export class BuildingService {
       building.workFronts = await entityManager.save<WorkFront>(building.workFronts);
 
       const createProgresses       = this.extractProgresses(parsed.data, parsed.dateColName, building.workFronts, building.sprints);
-      const progresses: Progress[] = entityManager.create<Progress>(Progress, createProgresses);
-      await entityManager.save<Progress>(progresses);
+      const progresses: Plan[] = entityManager.create<Plan>(Plan, createProgresses);
+      await entityManager.save<Plan>(progresses);
 
       return await entityManager.save<Building>(building);
     });

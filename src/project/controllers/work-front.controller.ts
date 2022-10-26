@@ -10,19 +10,4 @@ import { CreateWorkFrontDto }                                from '../dtos/creat
 @Controller('work-front')
 export class WorkFrontController {
   constructor(protected workFrontSrv: WorkFrontService) {}
-
-  @Post()
-  @HttpCode(HttpStatus.CREATED)
-  @Serialize(WorkFrontDto)
-  @ApiResponse({ status: HttpStatus.CREATED, type: WorkFrontDto, description: 'Successful creation.' })
-  async createWorkFront(@Body() createDto: CreateWorkFrontDto): Promise<WorkFront> {
-    return await this.workFrontSrv.create(createDto);
-  }
-
-  @Get()
-  @Serialize(WorkFrontDto)
-  @ApiResponse({ status: HttpStatus.OK, type: WorkFrontDto, isArray: true, description: 'All work fronts.'})
-  async getAll(): Promise<WorkFront[]> {
-    return await this.workFrontSrv.getAll();
-  }
 }
