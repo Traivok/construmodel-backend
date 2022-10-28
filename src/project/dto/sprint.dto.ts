@@ -1,6 +1,8 @@
 import { Expose, Transform } from 'class-transformer';
 import { entitiesToDTOs }    from '../../commons/commons.lib';
 import { TaskDto }           from './task.dto';
+import { ApiProperty }       from '@nestjs/swagger';
+import { SprintStatus }      from '../entities/sprint.entity';
 
 export class SprintDto {
   @Expose()
@@ -17,7 +19,8 @@ export class SprintDto {
   tasks: TaskDto[];
 
   @Expose()
-  status: string;
+  @ApiProperty({ enum: SprintStatus })
+  status: SprintStatus;
 
   @Expose()
   progress: { done: number, planned: number, late: boolean };

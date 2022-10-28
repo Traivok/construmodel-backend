@@ -1,5 +1,5 @@
 import { Body, Controller, HttpCode, HttpStatus, Logger, Patch } from '@nestjs/common';
-import { ApiTags }                                               from '@nestjs/swagger';
+import { ApiResponse, ApiTags }                                  from '@nestjs/swagger';
 import { CatchEntityErrors }                                     from '../../commons/decorators/catch-entity-errors.decorator';
 import { SprintService }                                         from '../services/sprint.service';
 import { TaskService }                                           from '../services/task.service';
@@ -19,6 +19,7 @@ export class TaskController {
 
   @Patch()
   @HttpCode(HttpStatus.OK)
+  @ApiResponse({ status: HttpStatus.OK, type: undefined })
   public async update(@Body() updateDto: UpdateTaskDto): Promise<void> {
     const sprints: Sprint[] = await this.sprintService.findOlderThan(updateDto.date);
     const workFront         = await this.workFrontService.findOrFail(updateDto.workFrontName);

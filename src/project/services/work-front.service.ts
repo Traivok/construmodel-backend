@@ -22,7 +22,6 @@ export class WorkFrontService {
 
   public async findAll(): Promise<WorkFront[]> {
     return await this.repository.find({
-      relations: [ 'sprints' ],
     });
   }
 

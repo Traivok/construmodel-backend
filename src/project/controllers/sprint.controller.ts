@@ -31,17 +31,15 @@ export class SprintController {
     return await this.sprintService.find();
   }
 
-
   @Put()
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
   @HttpCode(HttpStatus.CREATED)
   @Serialize(SprintDto)
-  @ApiResponse({ status: HttpStatus.OK, type: SprintDto, isArray: true })
+  @ApiResponse({ status: HttpStatus.CREATED, type: SprintDto, isArray: true })
   async createProject(
     @Body() body: CreateProjectDto,
-    @UploadedFile() file: Express.Multer.File,
-  ): Promise<Sprint[]> {
+    @UploadedFile() file: Express.Multer.File) {
     const csv    = file.buffer.toString();
     const parsed = this.sprintService.parseCsvProject(csv);
 
