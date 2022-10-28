@@ -6,9 +6,7 @@ import { ProjectModule }               from './project/project.module';
 import { TypeOrmModule }               from '@nestjs/typeorm';
 import { User }                        from './user/entities/user.entity';
 import getConfig                       from '../config';
-import { Entities as ProjectEntities } from './project/entities';
-import { PlanSubscriber }              from './project/subscribers/plan.subscriber';
-import { SprintSubscriber }            from './project/subscribers/sprint.subscriber';
+import { ProjectEntities }             from './project/entities';
 
 @Module({
   imports:     [
@@ -26,10 +24,7 @@ import { SprintSubscriber }            from './project/subscribers/sprint.subscr
           User,
           ...ProjectEntities,
         ],
-        subscribers: [
-          PlanSubscriber,
-          SprintSubscriber,
-        ],
+        subscribers: [],
         synchronize: conf.getOrThrow<boolean>('DB_SYNC'),
       } ),
     }),

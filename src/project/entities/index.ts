@@ -1,15 +1,9 @@
-import { Building }     from './building.entity';
-import { WorkFront }    from './work-front.entity';
-import { Sprint }       from './sprint.entity';
-import { Plan }         from './plan.entity';
-import { Execution }    from './execution.entity';
-import { ProgressView } from './progress.view.entity';
+import { WorkFront } from './work-front.entity';
+import { Sprint }    from './sprint.entity';
+import { Task }      from './task.entity';
 
-export const Entities = [
-  Building,
+export const ProjectEntities = [
   WorkFront,
-  Plan,
-  Execution,
   Sprint,
-  ProgressView,
+  Task,
 ];

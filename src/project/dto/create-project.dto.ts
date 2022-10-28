@@ -1,5 +1,4 @@
-import { ApiProperty }        from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateProjectDto {
   @ApiProperty({ type: 'file', required: true })

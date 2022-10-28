@@ -1,48 +1,32 @@
-import { Injectable, Logger }       from '@nestjs/common';
-import { CreateWorkFrontDto }       from '../dtos/create-work-front.dto';
-import { WorkFront }                from '../entities/work-front.entity';
-import { InjectRepository }         from '@nestjs/typeorm';
-import { InsertResult, Repository } from 'typeorm';
+import { Injectable, Logger } from '@nestjs/common';
+import { WorkFront }          from '../entities/work-front.entity';
+import { CreateWorkFrontDto } from '../dto/create-work-front.dto';
+import { InjectRepository }   from '@nestjs/typeorm';
+import { Repository }         from 'typeorm';
 
 @Injectable()
 export class WorkFrontService {
   private readonly logger = new Logger(WorkFrontService.name);
 
-  constructor(@InjectRepository(WorkFront) protected repo: Repository<WorkFront>) {}
+  constructor(@InjectRepository(WorkFront) public repository: Repository<WorkFront>) {}
 
-  public get repository(): Repository<WorkFront> { return this.repo };
-
-  async create(dto: CreateWorkFrontDto): Promise<WorkFront> {
-    dto.name        = dto.name.toLocaleLowerCase();
-    const workFront = this.repo.create(dto);
-    return await this.repo.save(workFront);
+  public async create(createDto: CreateWorkFrontDto): Promise<WorkFront> {
+    const workFront: WorkFront = this.repository.create(createDto);
+    return await this.repository.save(workFront);
   }
 
-  async findOneOrFail(name: string): Promise<WorkFront> {
-    return await this.repo.findOneByOrFail({ name });
+  public async createMultiple(dtos: CreateWorkFrontDto[]): Promise<WorkFront[]> {
+    const workFronts: WorkFront[] = this.repository.create(dtos);
+    return await this.repository.save(workFronts);
   }
 
-  async getAll(buildings: boolean = true): Promise<WorkFront[]> {
-    return await this.repo.find({
-      relations: { buildings },
+  public async findAll(): Promise<WorkFront[]> {
+    return await this.repository.find({
+      relations: [ 'sprints' ],
     });
   }
 
-  public async createIfNotExists(dtos: CreateWorkFrontDto[], save: boolean = true): Promise<WorkFront[]> {
-    const wfs               = await this.getAll(false);
-    const olds: WorkFront[] = [];
-    const news: WorkFront[] = [];
-
-    for (const dto of dtos) {
-      const wf = wfs.find(wf => wf.name === dto.name);
-
-      if (wf === undefined) {
-        news.push(this.repo.create(dto));
-      } else {
-        olds.push(wf);
-      }
-    }
-
-    return olds.concat(save ? await this.repo.save(news) : news);
+  public async findOrFail(name: string): Promise<WorkFront> {
+    return await this.repository.findOneOrFail({ where: { name } });
   }
 }

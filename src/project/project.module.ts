@@ -1,33 +1,28 @@
 import { Module }              from '@nestjs/common';
-import { TypeOrmModule }       from '@nestjs/typeorm';
-import { Entities }            from './entities';
-import { BuildingController } from './controllers/building.controller';
-import { PlanService }        from './services/plan.service';
-import { WorkFrontService }   from './services/work-front.service';
-import { BuildingService }     from './services/building.service';
 import { WorkFrontController } from './controllers/work-front.controller';
-import { ExecutionService }    from './services/execution.service';
-import { PlanController }      from './controllers/plan.controller';
+import { TaskService } from './services/task.service';
+import { TaskController } from './controllers/task.controller';
 import { SprintService }       from './services/sprint.service';
+import { WorkFrontService }    from './services/work-front.service';
+import { SprintController }    from './controllers/sprint.controller';
+import { TypeOrmModule }       from '@nestjs/typeorm';
+import { ProjectEntities }     from './entities';
 
 @Module({
   controllers: [
-    BuildingController,
     WorkFrontController,
-    PlanController,
+    SprintController,
+    TaskController,
   ],
   providers:   [
-    BuildingService,
-    WorkFrontService,
-    PlanService,
     SprintService,
-    ExecutionService,
+    WorkFrontService,
+    TaskService,
   ],
   imports:     [
     TypeOrmModule.forFeature([
-      ...Entities,
+      ...ProjectEntities,
     ]),
-
   ],
 })
 export class ProjectModule {}

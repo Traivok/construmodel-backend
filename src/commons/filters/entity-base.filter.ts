@@ -21,7 +21,6 @@ export abstract class EntityBaseFilterFilter<T> implements ExceptionFilter {
       res.status(status)
         .json({
           statusCode: status,
-          message:    exception,
         });
     } else {
       this.logger.error(exception);

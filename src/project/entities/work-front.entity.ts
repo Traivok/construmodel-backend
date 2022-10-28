@@ -1,23 +1,17 @@
-import { Entity, ManyToMany, OneToMany, PrimaryColumn } from 'typeorm';
-import { Building }                                     from './building.entity';
-import { Plan }                                         from './plan.entity';
-import { Execution }                                    from './execution.entity';
-import { ProgressView }                                 from './progress.view.entity';
+import { Check, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { Task }                                            from './task.entity';
+
+export const WorkFront_NAME_LENGTH = 128;
 
 @Entity('work_front')
+@Check(' "floors" > 0 ')
 export class WorkFront {
-  @PrimaryColumn()
+  @PrimaryColumn({ unique: true, nullable: false, length: 128 })
   name: string;
 
-  @ManyToMany(() => Building, building => building.workFronts)
-  buildings?: Building[];
+  @Column()
+  floors: number;
 
-  @OneToMany(() => Plan, plan => plan.workFront)
-  plans: Plan[];
-
-  @OneToMany(() => Execution, execution => execution.workFront)
-  executions: Execution[];
-
-  @OneToMany(() => ProgressView, progress => progress.workFront)
-  progressesView: ProgressView[];
+  @OneToMany(() => Task, task => task.workFront)
+  tasks: Task[];
 }
