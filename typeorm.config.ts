@@ -9,9 +9,10 @@ logger.log(`Connecting to database ${ config.DB_NAME } as ${ config.DB_USER }`);
 
 export default new DataSource({
   type:          'postgres',
-  host:          'localhost',
+  host:          config.DB_HOST ?? 'localhost',
   database:      config.DB_NAME,
   username:      config.DB_USER,
+  password:      config.DB_PASSWORD ?? null,
   synchronize:   config.DB_SYNC ?? false,
   migrationsRun: false,
   logging:       config.DB_LOG ?? false,

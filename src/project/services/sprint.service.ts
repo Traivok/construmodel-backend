@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable, Logger }       from '@nestjs/common';
-import { Sprint }                                        from '../entities/sprint.entity';
+import { Sprint, SprintStatus }                          from '../entities/sprint.entity';
 import { WorkFront }                                     from '../entities/work-front.entity';
 import { CreateSprintDto }                               from '../dto/create-sprint.dto';
 import { isSunday }                                      from 'date-fns/fp';
-import { nextSaturday, previousSunday }                  from 'date-fns';
-import { DataSource, DeepPartial, MoreThan, Repository } from 'typeorm';
-import { InjectDataSource, InjectRepository }            from '@nestjs/typeorm';
+import { nextSaturday, previousSunday }                                   from 'date-fns';
+import { DataSource, DeepPartial, MoreThan, MoreThanOrEqual, Repository } from 'typeorm';
+import { InjectDataSource, InjectRepository }                             from '@nestjs/typeorm';
 import { parse }                                         from 'papaparse';
 import { ParsedProject }                                 from '../interfaces/parsed-project';
 import { WorkFrontService }                              from './work-front.service';
@@ -27,6 +27,13 @@ export class SprintService {
     });
   }
 
+  public async findOrFail(id: number): Promise<Sprint> {
+    return await this.repository.findOneOrFail({
+      where:     { id },
+      relations: [ 'tasks', 'tasks.workFront' ],
+    });
+  }
+
   public async createSprint(dto: CreateSprintDto): Promise<Sprint> {
     const sprint: Sprint = this.repository.create(this.fixDates(dto));
     return await this.repository.save(sprint);
@@ -37,13 +44,40 @@ export class SprintService {
     return await this.repository.save(sprints);
   }
 
-  public async findOlderThan(date: Date): Promise<Sprint[]> {
+  public async findNewerThan(date: Date): Promise<Sprint[]> {
     return await this.repository.find({
       where:     {
-        start: MoreThan(date),
+        start: MoreThanOrEqual(date),
       },
       relations: [ 'tasks' ],
     });
+  }
+
+  public async findPrevious(): Promise<Sprint | null> {
+    const older             = (a: Sprint, b: Sprint): Sprint => a.start.getTime() < b.start.getTime() ? a : b;
+    const sprints: Sprint[] = await this.find();
+
+    return sprints.filter(s => s.status === SprintStatus.PAST)
+      .reduce(
+        (prev: Sprint | null, curr: Sprint) => prev === null ? curr : older(prev, curr),
+        null,
+      );
+  }
+
+  public async findCurrent(): Promise<Sprint | null> {
+    const sprints: Sprint[] = await this.find();
+    return sprints.find(s => s.status === SprintStatus.CURRENT) ?? null;
+  }
+
+  public async findNext(): Promise<Sprint | null> {
+    const newer             = (a: Sprint, b: Sprint): Sprint => a.start.getTime() >= b.start.getTime() ? a : b;
+    const sprints: Sprint[] = await this.find();
+
+    return sprints.filter(s => s.status === SprintStatus.FUTURE)
+      .reduce(
+        (prev: Sprint | null, curr: Sprint) => prev === null ? curr : newer(prev, curr),
+        null,
+      );
   }
 
   protected normalizeStart(start: Date): Date {
@@ -158,4 +192,6 @@ export class SprintService {
            SprintService.findSorted(sprints, startDate, start, mid - 1) :
            SprintService.findSorted(sprints, startDate, mid + 1, end);
   }
+
+
 }

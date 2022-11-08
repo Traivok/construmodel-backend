@@ -3,7 +3,7 @@ import {
   Controller, Get,
   HttpCode,
   HttpStatus,
-  Logger,
+  Logger, Param, ParseIntPipe,
   Post,
   Put,
   UploadedFile,
@@ -29,6 +29,34 @@ export class SprintController {
   @ApiResponse({ status: HttpStatus.OK, type: SprintDto, isArray: true })
   async find(): Promise<Sprint[]> {
     return await this.sprintService.find();
+  }
+
+  @Get('previous')
+  @Serialize(SprintDto)
+  @ApiResponse({ status: HttpStatus.OK, type: SprintDto })
+  async findPrevious(): Promise<Sprint | null> {
+    return await this.sprintService.findPrevious();
+  }
+
+  @Get('current')
+  @Serialize(SprintDto)
+  @ApiResponse({ status: HttpStatus.OK, type: SprintDto })
+  async findCurrent(): Promise<Sprint | null> {
+    return await this.sprintService.findCurrent();
+  }
+
+  @Get('next')
+  @Serialize(SprintDto)
+  @ApiResponse({ status: HttpStatus.OK, type: SprintDto })
+  async findNext(): Promise<Sprint | null> {
+    return await this.sprintService.findNext();
+  }
+
+  @Get(':id')
+  @Serialize(SprintDto)
+  @ApiResponse({ status: HttpStatus.OK, type: SprintDto })
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<Sprint> {
+    return await this.sprintService.findOrFail(id);
   }
 
   @Put()

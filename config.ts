@@ -1,3 +1,5 @@
+import ProdConfig from './prod.config';
+
 process.env.NODE_ENV = process.env.NODE_ENV ?? 'dev';
 
 export type Config = { [key: string]: any };
@@ -5,6 +7,7 @@ export type Config = { [key: string]: any };
 export const baseConfig: Config = {
   DB_USER: process.env.USER,
   DB_SYNC: false,
+  DB_HOST: 'localhost',
 };
 
 export const devConfig: Config = {
@@ -24,8 +27,8 @@ export const testConfig: Config = {
 
 export const prodConfig: Config = {
   ...baseConfig,
-  COOKIE_SECRET: 'fixme', // FIXME TODO
-  DB_NAME:       'cm_prod',
+  DB_NAME:       'postgres',
+  ...ProdConfig
 };
 
 let config: Config;

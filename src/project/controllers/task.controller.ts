@@ -21,7 +21,7 @@ export class TaskController {
   @HttpCode(HttpStatus.OK)
   @ApiResponse({ status: HttpStatus.OK, type: undefined })
   public async update(@Body() updateDto: UpdateTaskDto): Promise<void> {
-    const sprints: Sprint[] = await this.sprintService.findOlderThan(updateDto.date);
+    const sprints: Sprint[] = await this.sprintService.findNewerThan(updateDto.date);
     const workFront         = await this.workFrontService.findOrFail(updateDto.workFrontName);
     await this.taskService.update(updateDto.done, workFront, sprints);
   }
