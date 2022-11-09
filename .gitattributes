@@ -1,1 +1,1 @@
-prod.config.ts filter=git-crypt diff=git-crypt
+prod.secrets.ts filter=git-crypt diff=git-crypt

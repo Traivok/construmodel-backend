@@ -1,4 +1,4 @@
-import ProdConfig from './prod.config';
+import { prodSecrets } from './prod.secrets';
 
 process.env.NODE_ENV = process.env.NODE_ENV ?? 'dev';
 
@@ -27,8 +27,8 @@ export const testConfig: Config = {
 
 export const prodConfig: Config = {
   ...baseConfig,
-  DB_NAME:       'postgres',
-  ...ProdConfig
+  DB_NAME: 'postgres',
+  ...prodSecrets,
 };
 
 let config: Config;
