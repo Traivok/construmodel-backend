@@ -59,19 +59,4 @@ export class SprintController {
     return await this.sprintService.findOrFail(id);
   }
 
-  @Put()
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
-  @HttpCode(HttpStatus.CREATED)
-  @Serialize(SprintDto)
-  @ApiResponse({ status: HttpStatus.CREATED, type: SprintDto, isArray: true })
-  async createProject(
-    @Body() body: CreateProjectDto,
-    @UploadedFile() file: Express.Multer.File) {
-    const csv    = file.buffer.toString();
-    const parsed = this.sprintService.parseCsvProject(csv);
-
-    return await this.sprintService.createProject(parsed);
-  }
-
 }

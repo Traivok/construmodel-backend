@@ -1,5 +1,15 @@
-import { Check, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Task }                                                     from './task.entity';
+import {
+  Check,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+}                   from 'typeorm';
+import { Task }     from './task.entity';
+import { Building } from './building.entity';
 
 export enum SprintStatus {
   FUTURE  = 'FUTURE',
@@ -12,6 +22,13 @@ export enum SprintStatus {
 export class Sprint {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column({ name: 'building_id' })
+  buildingId: number;
+
+  @ManyToOne(() => Building, building => building.sprints, { nullable: false, cascade: true })
+  @JoinColumn({ name: 'building_id' })
+  building: Building;
 
   @Column({ nullable: false, unique: true })
   start: Date;

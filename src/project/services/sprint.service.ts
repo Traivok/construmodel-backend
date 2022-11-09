@@ -1,16 +1,17 @@
-import { BadRequestException, Injectable, Logger }       from '@nestjs/common';
-import { Sprint, SprintStatus }                          from '../entities/sprint.entity';
-import { WorkFront }                                     from '../entities/work-front.entity';
-import { CreateSprintDto }                               from '../dto/create-sprint.dto';
-import { isSunday }                                      from 'date-fns/fp';
+import { BadRequestException, Injectable, Logger }                        from '@nestjs/common';
+import { Sprint, SprintStatus }                                           from '../entities/sprint.entity';
+import { WorkFront }                                                      from '../entities/work-front.entity';
+import { CreateSprintDto }                                                from '../dto/create-sprint.dto';
+import { isSunday }                                                       from 'date-fns/fp';
 import { nextSaturday, previousSunday }                                   from 'date-fns';
 import { DataSource, DeepPartial, MoreThan, MoreThanOrEqual, Repository } from 'typeorm';
 import { InjectDataSource, InjectRepository }                             from '@nestjs/typeorm';
-import { parse }                                         from 'papaparse';
-import { ParsedProject }                                 from '../interfaces/parsed-project';
-import { WorkFrontService }                              from './work-front.service';
-import { TaskService }                                   from './task.service';
-import { Task }                                          from '../entities/task.entity';
+import { parse }                                                          from 'papaparse';
+import { ParsedProject }                                                  from '../interfaces/parsed-project';
+import { WorkFrontService }                                               from './work-front.service';
+import { TaskService }                                                    from './task.service';
+import { Task }                                                           from '../entities/task.entity';
+import { Building }                                                       from '../entities/building.entity';
 
 @Injectable()
 export class SprintService {
@@ -134,7 +135,7 @@ export class SprintService {
     }
   }
 
-  public async createProject(parsed: ParsedProject): Promise<Sprint[]> {
+  public async createProject(building: Building, parsed: ParsedProject): Promise<Sprint[]> {
     return await this.dataSource.manager.transaction(async (entityManager) => {
       await entityManager.query('TRUNCATE TABLE work_front RESTART IDENTITY CASCADE');
       await entityManager.query('TRUNCATE TABLE sprint RESTART IDENTITY CASCADE');
@@ -144,7 +145,11 @@ export class SprintService {
       );
 
       const sprints = await entityManager.save(Sprint,
-        entityManager.create(Sprint, parsed.sprints),
+        entityManager.create(Sprint, parsed.sprints.map(sprint => ( {
+          ...sprint,
+          building,
+          buildingId: building.id,
+        } ))),
       );
 
       sprints.sort((a, b) => a.start.getTime() - b.start.getTime());

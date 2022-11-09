@@ -23,13 +23,13 @@ export class WorkFrontController {
   @Serialize(WorkFrontDto)
   @ApiResponse({ status: HttpStatus.CREATED, type: WorkFrontDto })
   async createWorkFront(@Body() createDto: CreateWorkFrontDto): Promise<WorkFront> {
-    return this.workFrontService.create(createDto);
+    return await this.workFrontService.create(createDto);
   }
 
   @Get()
   @Serialize(WorkFrontDto)
   @ApiResponse({ status: HttpStatus.OK, isArray: true, type: WorkFrontDto })
   async findAll(): Promise<WorkFront[]> {
-    return this.workFrontService.findAll();
+    return await this.workFrontService.findAll();
   }
 }
