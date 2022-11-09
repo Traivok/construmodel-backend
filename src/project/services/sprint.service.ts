@@ -163,7 +163,7 @@ export class SprintService {
           throw new BadRequestException(`Invalid date for ${ date }`);
 
         const tasks: DeepPartial<Task>[] = workFronts.map(wf => ( {
-          sprint,
+          //sprint,
           sprintId:      sprint.id,
           workFrontName: wf.name,
           workFront:     wf,
