@@ -7,7 +7,8 @@ WORKDIR /usr/src/app
 
 # Copy package.json and install dependencies
 COPY package*.json ./
-RUN npm install && npm install -g cross-env
+RUN npm install && \
+    npm install -g cross-env
 
 # Copy src code
 COPY . .
