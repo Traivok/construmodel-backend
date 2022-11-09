@@ -28,6 +28,7 @@ export const testConfig: Config = {
 export const prodConfig: Config = {
   ...baseConfig,
   DB_NAME: 'postgres',
+  DB_USER: 'postgres',
   ...prodSecrets,
 };
 
