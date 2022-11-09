@@ -144,6 +144,7 @@ export class SprintService {
         entityManager.create(WorkFront, parsed.workFronts),
       );
 
+      parsed.sprints = parsed.sprints.map(sprint => ({ ...sprint, building, buildingId: building.id }));
       const sprints = await entityManager.save(Sprint,
         entityManager.create(Sprint, parsed.sprints.map(sprint => ( {
           ...sprint,
