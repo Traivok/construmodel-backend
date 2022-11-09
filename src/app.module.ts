@@ -20,6 +20,9 @@ import { ProjectEntities }             from './project/entities';
       useFactory: (conf: ConfigService) => ( {
         type:        'postgres',
         database:    conf.getOrThrow<string>('DB_NAME'),
+        host:        conf.get<string>('DB_HOST'),
+        password:    conf.get<string>('DB_PASSWORD'),
+        username:    conf.get<string>('DB_USER'),
         entities:    [
           User,
           ...ProjectEntities,
