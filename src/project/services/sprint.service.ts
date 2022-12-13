@@ -148,7 +148,7 @@ export class SprintService {
       const sprints = await entityManager.save(Sprint,
         entityManager.create(Sprint, parsed.sprints.map(sprint => ( {
           ...sprint,
-          building,
+          // building,
           buildingId: building.id,
         } ))),
       );

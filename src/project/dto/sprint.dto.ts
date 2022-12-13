@@ -1,7 +1,7 @@
 import { Expose, Transform } from 'class-transformer';
-import { entitiesToDTOs }    from '../../commons/commons.lib';
-import { TaskDto }           from './task.dto';
-import { ApiProperty }       from '@nestjs/swagger';
+import { entitiesToDTOs } from '../../commons/commons.lib';
+import { TaskDto }        from './tasks/task.dto';
+import { ApiProperty }    from '@nestjs/swagger';
 import { SprintStatus }      from '../entities/sprint.entity';
 
 export class SprintDto {
