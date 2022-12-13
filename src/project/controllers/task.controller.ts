@@ -1,17 +1,28 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Logger, Patch, Query } from '@nestjs/common';
-import { ApiResponse, ApiTags }                                              from '@nestjs/swagger';
-import { CatchEntityErrors } from '../../commons/decorators/catch-entity-errors.decorator';
-import { SprintService }     from '../services/sprint.service';
-import { TaskService }       from '../services/task.service';
-import { WorkFrontService }  from '../services/work-front.service';
-import { UpdateTaskDto }     from '../dto/tasks/update-task.dto';
-import { Sprint }            from '../entities/sprint.entity';
-import { TaskDto }           from '../dto/tasks/task.dto';
-import { Serialize }         from '../../commons/decorators/serialize.decorator';
-import { SprintDto }         from '../dto/sprint.dto';
-import { Task }              from '../entities/task.entity';
-import { TaskDetailDto }     from '../dto/tasks/task-detail.dto';
-import { TaskQueryDto }      from '../dto/tasks/task-query.dto';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Logger,
+  ParseIntPipe,
+  Patch,
+  Query, UsePipes,
+  ValidationPipe,
+}                                         from '@nestjs/common';
+import { ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CatchEntityErrors }              from '../../commons/decorators/catch-entity-errors.decorator';
+import { SprintService }                  from '../services/sprint.service';
+import { TaskService }                    from '../services/task.service';
+import { WorkFrontService }               from '../services/work-front.service';
+import { UpdateTaskDto }                  from '../dto/tasks/update-task.dto';
+import { Sprint }                         from '../entities/sprint.entity';
+import { TaskDto }                        from '../dto/tasks/task.dto';
+import { Serialize }                      from '../../commons/decorators/serialize.decorator';
+import { SprintDto }                      from '../dto/sprint.dto';
+import { Task }                           from '../entities/task.entity';
+import { TaskDetailDto }                  from '../dto/tasks/task-detail.dto';
+import { TaskQueryDto }                   from '../dto/tasks/task-query.dto';
 
 @ApiTags('task')
 @Controller('task')
@@ -35,6 +46,7 @@ export class TaskController {
   @Get()
   @Serialize(TaskDetailDto)
   @ApiResponse({ status: HttpStatus.OK, type: TaskDetailDto, isArray: true })
+  @UsePipes(new ValidationPipe({ whitelist: true, transform: true, stopAtFirstError: true }))
   public async find(@Query() query: TaskQueryDto): Promise<Task[]> {
     return await this.taskService.findBy(query);
   }

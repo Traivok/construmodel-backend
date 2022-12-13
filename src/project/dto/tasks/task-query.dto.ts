@@ -1,12 +1,11 @@
-import { Expose } from 'class-transformer';
+import { IsInt, IsOptional, IsString } from 'class-validator';
 
 export class TaskQueryDto {
-  @Expose()
+  @IsOptional()
+  @IsString()
   workFrontName?: string;
 
-  @Expose()
+  @IsOptional()
+  @IsInt()
   sprintId?: number;
-
-  @Expose()
-  late?: boolean;
 }

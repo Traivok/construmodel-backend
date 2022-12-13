@@ -25,9 +25,9 @@ export class TaskService {
   }
 
   public async findBy(where: Partial<Task>): Promise<Task[]> {
-    return await this.repository.find({
+    return  await this.repository.find({
       where,
-      relations: [ 'sprint' ],
+      relations: [ 'sprint', 'workFront' ],
     });
   }
 }
